@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Leonida Vault – GTA 6 Guide &amp; Glitch Hub (DE)</title>
+  <style>
+    :root {
+      --bg: #090612;
+      --bg-card: #130e24;
+      --bg-card-2: #1a1333;
+      --border: rgba(255, 42, 133, 0.25);
+      --border-cyan: rgba(0, 240, 255, 0.28);
+      --pink: #ff2a85;
+      --cyan: #00f0ff;
+      --orange: #ff9900;
+      --green: #00e676;
+      --yellow: #ffd600;
+      --text: #f4f2ff;
+      --muted: #a69ec4;
+      --radius: 14px;
+    }
+
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif;
+      background:
+        radial-gradient(circle at 12% 8%, rgba(255, 42, 133, 0.18), transparent 36%),
+        radial-gradient(circle at 88% 12%, rgba(0, 240, 255, 0.14), transparent 38%),
+        var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding-bottom: 84px;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(9, 6, 18, 0.9);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 14px 10px;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 11px;
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      display: grid;
+      place-items: center;
+      font-weight: 900;
+      font-size: 16px;
+      color: #fff;
+      box-shadow: 0 0 18px rgba(255, 42, 133, 0.45);
+      flex-shrink: 0;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 17px;
+      letter-spacing: 0.4px;
+      background: linear-gradient(90deg, #fff, var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand small {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .de-pill {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(0, 240, 255, 0.12);
+      border: 1px solid var(--border-cyan);
+      color: var(--cyan);
+      white-space: nowrap;
+    }
+
+    .search-wrap {
+      position: relative;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 10px 36px 10px 36px;
+      border-radius: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      background: var(--bg-card);
+      color: var(--text);
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-wrap input:focus {
+      border-color: var(--cyan);
+      box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.18);
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 11px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.65;
+      font-size: 14px;
+    }
+
+    .clear-search {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--muted);
+      font-size: 16px;
+      cursor: pointer;
+      display: none;
+    }
+
+    main {
+      max-width: 820px;
+      margin: 0 auto;
+      padding: 14px;
+    }
+
+    .tab-section { display: none; }
+    .tab-section.active { display: block; animation: fadeIn 0.2s ease; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .progress-card {
+      background: linear-gradient(135deg, rgba(255, 42, 133, 0.14), rgba(0, 240, 255, 0.08));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 12px;
+    }
+
+    .progress-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--pink), var(--cyan));
+      transition: width 0.3s ease;
+    }
+
+    .filter-row {
+      display: flex;
+      gap: 7px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+      scrollbar-width: none;
+    }
+    .filter-row::-webkit-scrollbar { display: none; }
+
+    .chip {
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: var(--bg-card);
+      color: var(--muted);
+      padding: 7px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .chip.active {
+      background: linear-gradient(135deg, var(--pink), #b81dff);
+      color: #fff;
+      border-color: transparent;
+      box-shadow: 0 0 12px rgba(255, 42, 133, 0.4);
+    }
+
+    .status-bar {
+      font-size: 12px;
+      color: var(--cyan);
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: var(--radius);
+      padding: 14px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s;
+    }
+
+    .card.found {
+      border-color: rgba(0, 230, 118, 0.45);
+      background: linear-gradient(180deg, rgba(0, 230, 118, 0.06), var(--bg-card));
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .card-title {
+      margin: 0 0 4px;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.25;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+    }
+
+    .badge.weapon { background: rgba(255, 42, 133, 0.18); color: #ff7ab6; border: 1px solid rgba(255, 42, 133, 0.35); }
+    .badge.stash { background: rgba(255, 153, 0, 0.18); color: #ffc266; border: 1px solid rgba(255, 153, 0, 0.35); }
+    .badge.region { background: rgba(0, 240, 255, 0.14); color: var(--cyan); }
+    .badge.perm { background: rgba(0, 230, 118, 0.15); color: var(--green); }
+    .badge.glitch { background: rgba(255, 214, 0, 0.16); color: var(--yellow); }
+
+    .card p {
+      margin: 0 0 10px;
+      font-size: 13.5px;
+      line-height: 1.48;
+      color: #d7d2eb;
+    }
+
+    .code-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .code-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--bg-card-2);
+      border: 1px dashed var(--cyan);
+      color: var(--cyan);
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 9px;
+      padding: 8px 12px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn-found {
+      background: rgba(255, 255, 255, 0.08);
+      color: var(--text);
+    }
+    .btn-found.is-found {
+      background: rgba(0, 230, 118, 0.2);
+      color: var(--green);
+      border: 1px solid rgba(0, 230, 118, 0.45);
+    }
+
+    .btn-fav {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+    }
+    .btn-fav.is-fav {
+      background: rgba(255, 214, 0, 0.18);
+      color: var(--yellow);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--pink), var(--orange));
+      color: #fff;
+    }
+
+    .btn-cyan {
+      background: rgba(0, 240, 255, 0.15);
+      color: var(--cyan);
+      border: 1px solid var(--border-cyan);
+    }
+
+    .warn-banner {
+      background: rgba(255, 153, 0, 0.14);
+      border: 1px solid rgba(255, 153, 0, 0.5);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      line-height: 1.45;
+      color: #ffe0b2;
+    }
+
+    .warn-banner strong { color: var(--orange); }
+
+    .checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+      cursor: pointer;
+      font-size: 13.5px;
+    }
+    .checklist-item:last-child { border-bottom: none; }
+    .checklist-item input {
+      margin-top: 3px;
+      width: 18px;
+      height: 18px;
+      accent-color: var(--green);
+      flex-shrink: 0;
+    }
+    .checklist-item.done span {
+      text-decoration: line-through;
+      color: var(--muted);
+    }
+
+    .platform-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: var(--bg-card);
+      padding: 5px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      margin-bottom: 12px;
+    }
+
+    .platform-btn {
+      border: none;
+      border-radius: 9px;
+      padding: 10px;
+      font-size: 13px;
+      font-weight: 800;
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .platform-btn.active.ps5 {
+      background: #0050d8;
+      color: #fff;
+    }
+    .platform-btn.active.xbox {
+      background: #107c10;
+      color: #fff;
+    }
+
+    .keycaps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 8px 0;
+      align-items: center;
+    }
+
+    .keycap {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      padding: 0 7px;
+      border-radius: 7px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #231b40;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+    }
+
+    .keycap.trigger { background: rgba(255, 42, 133, 0.25); border-color: var(--pink); color: #ff99c8; }
+    .keycap.up { color: #00f0ff; }
+    .keycap.down { color: #ff6b9d; }
+    .keycap.left { color: #ffd600; }
+    .keycap.right { color: #00e676; }
+
+    .counter-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .counter-row:last-child { border-bottom: none; }
+
+    .counter-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .c-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: var(--bg-card-2);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .c-val {
+      min-width: 58px;
+      text-align: center;
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--cyan);
+    }
+
+    textarea {
+      width: 100%;
+      min-height: 110px;
+      background: var(--bg-card-2);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      color: var(--text);
+      padding: 10px;
+      font-family: inherit;
+      font-size: 13.5px;
+      resize: vertical;
+      margin-bottom: 8px;
+    }
+
+    .note-item {
+      background: var(--bg-card-2);
+      border-radius: 10px;
+      padding: 10px 12px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: flex-start;
+      font-size: 13px;
+    }
+
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 60;
+      background: rgba(13, 9, 26, 0.96);
+      backdrop-filter: blur(12px);
+      border-top: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 6px 4px 8px;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      font-size: 10.5px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 4px 2px;
+    }
+
+    .nav-btn .ico { font-size: 18px; }
+    .nav-btn.active { color: var(--cyan); }
+
+    .toast {
+      position: fixed;
+      bottom: 82px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: #1d1638;
+      border: 1px solid var(--cyan);
+      color: #fff;
+      padding: 9px 16px;
+      border-radius: 999px;
+      font-size: 12.5px;
+      font-weight: 700;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.25s ease;
+      z-index: 100;
+      white-space: nowrap;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 28px 16px;
+      color: var(--muted);
+      font-size: 14px;
+      background: var(--bg-card);
+      border-radius: var(--radius);
+      border: 1px dashed rgba(255, 255, 255, 0.14);
+    }
+
+    ol.steps {
+      margin: 8px 0 10px;
+      padding-left: 18px;
+      color: #d7d2eb;
+      font-size: 13.5px;
+      line-height: 1.5;
+    }
+    ol.steps li { margin-bottom: 5px; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand-row">
+      <div class="brand">
+        <div class="logo-badge">VI</div>
+        <div>
+          <h1>Leonida Vault</h1>
+          <small>GTA 6 Guide, Glitches &amp; Cheats</small>
+        </div>
+      </div>
+      <span class="de-pill">🇩🇪 100% DE</span>
+    </div>
+    <div class="search-wrap">
+      <span class="search-icon">🔍</span>
+      <input id="globalSearch" type="search" placeholder="Suche Waffen, Codes (0072, 7700), Glitches, Cheats..." />
+      <button id="clearSearch" class="clear-search" aria-label="Suche leeren">✕</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- TAB 1: ITEMS -->
+    <section id="tab-items" class="tab-section active">
+      <div class="progress-card">
+        <div class="progress-head">
+          <span>🏆 Fundorte-Fortschritt</span>
+          <span id="itemsProgressText">0 / 9 gefunden</span>
+        </div>
+        <div class="progress-bar"><div id="itemsProgressBar" class="progress-fill"></div></div>
+      </div>
+
+      <div id="itemFilters" class="filter-row"></div>
+      <div id="itemStatus" class="status-bar"></div>
+      <div id="itemsList"></div>
+    </section>
+
+    <!-- TAB 2: GLITCHES & MONEY -->
+    <section id="tab-glitches" class="tab-section">
+      <div class="warn-banner">
+        <strong>⚠️ Wichtig für Kapitel 1:</strong> Bargeld in deiner Tasche kann am Ende von Kapitel 1 verloren gehen! Nur Geld auf deinem <strong>BuckMe-Bankkonto</strong> wird sicher übernommen – zahle deine Beute also rechtzeitig ein.
+      </div>
+
+      <div id="glitchFilters" class="filter-row"></div>
+      <div id="glitchStatus" class="status-bar"></div>
+
+      <div class="card" id="routeCard">
+        <div class="card-top">
+          <div>
+            <h3 class="card-title">🚀 4-Stationen-Schnellstart-Route (Kapitel 1)</h3>
+            <div class="badges">
+              <span class="badge region">Kapitel 1</span>
+              <span class="badge perm">Abhakbar</span>
+            </div>
+          </div>
+        </div>
+        <div id="routeChecklist"></div>
+      </div>
+
+      <div id="glitchesList"></div>
+    </section>
+
+    <!-- TAB 3: CHEATS -->
+    <section id="tab-cheats" class="tab-section">
+      <div class="platform-switch">
+        <button id="btnPs5" class="platform-btn active ps5">🎮 PS5 (L1 + R1)</button>
+        <button id="btnXbox" class="platform-btn xbox">🟩 Xbox (LB + RB)</button>
+      </div>
+
+      <div class="warn-banner">
+        <strong>💡 Eingabe &amp; Hinweis:</strong> Handy mit <strong>Steuerkreuz ↑</strong> öffnen, dann <strong id="cheatTriggerHint">L1 halten + R1 drücken</strong> und die Pfeil-Kombination eingeben. Cheats deaktivieren Trophäen/Erfolge und das Speichern – vorher manuell speichern!
+      </div>
+
+      <div id="cheatFilters" class="filter-row"></div>
+      <div id="cheatStatus" class="status-bar"></div>
+      <div id="cheatsList"></div>
+    </section>
+
+    <!-- TAB 4: VIDEOS & ARTIKEL -->
+    <section id="tab-media" class="tab-section">
+      <div class="card">
+        <h3 class="card-title">🎬 Deutsche YouTube-Guides (Direktsuche)</h3>
+        <p>Mit einem Tipp öffnest du direkt aktuelle deutschsprachige Video-Guides zu den wichtigsten GTA-6-Themen:</p>
+        <div class="card-actions">
+          <a class="btn btn-primary" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=GTA+6+alle+legend%C3%A4re+Waffen+Fundorte+deutsch">🔫 Legendäre Waffen (DE)</a>
+          <a class="btn btn-primary" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=GTA+6+Apollo+Aggregates+Money+Glitch+deutsch">💸 Money Glitch (DE)</a>
+          <a class="btn btn-cyan" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=GTA+6+alle+Cheats+Codes+deutsch">🎮 Alle Cheats (DE)</a>
+          <a class="btn btn-cyan" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=GTA+6+Tipps+Tricks+Anf%C3%A4nger+deutsch">⭐ Anfänger-Tipps (DE)</a>
+          <a class="btn btn-cyan" target="_blank" rel="noopener" href="https://www.youtube.com/results?search_query=GTA+6+Kokain+Flamingos+Fundorte+deutsch">🦩 Flamingos (DE)</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">📰 Deutsche Artikel &amp; Interaktive Karte</h3>
+        <p>Kuratierte deutschsprachige Nachschlagewerke und die komplette Leonida-Karte mit allen Waffen-, Fahrzeug- und Sammelobjekt-Markierungen:</p>
+        <div class="card-actions">
+          <a class="btn btn-primary" target="_blank" rel="noopener" href="https://www.gtabase.com/de/gta-6/karte/">🗺️ Interaktive Leonida-Karte (DE)</a>
+          <a class="btn btn-cyan" target="_blank" rel="noopener" href="https://www.gtabase.com/de/gta-6/karte/?feature=unique-weapon">🔫 Unique Waffen auf der Karte</a>
+          <a class="btn btn-cyan" target="_blank" rel="noopener" href="https://www.redbull.com/de-de/gta-6-alle-cheats-und-codes">📖 Red Bull DE: Alle Cheats</a>
+          <a class="btn btn-cyan" target="_blank" rel="noopener" href="https://www.eurogamer.de/gta-6-cheats-codes-freischalten-liste">📖 Eurogamer DE: Cheat-Liste</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: HELFER & NOTIZEN -->
+    <section id="tab-tools" class="tab-section">
+      <div class="card">
+        <h3 class="card-title">🔐 Geheim-Codes Spickzettel</h3>
+        <p>Tippe auf einen Code, um ihn direkt zu kopieren:</p>
+        <div class="code-row">
+          <button class="code-btn" data-copy="7700">📋 7700 – Brian's Lockup (Hehler)</button>
+          <button class="code-btn" data-copy="0072">📋 0072 – Pelican Valley Safe</button>
+          <button class="code-btn" data-copy="0212">📋 0212 – Pelican Valley SMG-Tür</button>
+          <button class="code-btn" data-copy="CLEAVES">📋 CLEAVES – Forschungs-PC</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">📊 100%-Sammel-Zähler</h3>
+        <div id="collectiblesBox"></div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">💡 Wichtige Pro-Tipps für Leonida</h3>
+        <p><strong>🚗 Kofferraum als Waffenlager:</strong> Öffne den Kofferraum deines persönlichen Fahrzeugs (Δ / Y) und halt
