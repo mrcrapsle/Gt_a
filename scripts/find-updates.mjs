@@ -28,7 +28,7 @@ const KNOWN_TERMS = [
   /waffenfreak|raketenwerfer|hauners h-at/i,
   /corkers/i,
   /exotic animals/i,                     // Glitch-Guide in index.html
-  /treasure hunt|kenton|leonida keys/i   // Guide "Schatzsuche um die Leonida Keys"
+  /treasure|kenton|leonida keys/i        // Guide "Schatzsuche um die Leonida Keys"
 ];
 // Ich-Form und Nutzerkommentare: keine Fundort-Angaben, sondern Meinungen.
 const FIRST_PERSON = /\b(ich|mein|meine|meinen|mir|mich)\b|\bI\b|\bmy\b|\bme\b|\bwe\b/i;
@@ -79,8 +79,9 @@ export function isUsefulHint(text, context = "") {
   if (text.length < 40 || text.length > 300) return false;
   if (REJECT.some(r => r.test(text))) return false;
   if (FIRST_PERSON.test(text)) return false;
-  // Doppelt zu einem Eintrag in der App? Die Überschrift zählt nur bei Exotic Animals.
-  const useContext = /exotic animals/i.test(context);
+  // Doppelt zu einem Eintrag in der App? Die Überschrift zählt nur bei Guides/Einträgen,
+  // die einen eigenen Namen in der Überschrift tragen (Exotic Animals, Kingfisher).
+  const useContext = /exotic animals|kingfisher/i.test(context);
   const haystack = useContext ? `${text} ${context}` : text;
   if (KNOWN_TERMS.some(k => k.test(haystack))) return false;
   const concrete = MONEY.test(text) || WEAPON_TERMS.test(text) || ITEM_TERMS.test(text);
