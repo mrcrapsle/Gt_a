@@ -38,6 +38,7 @@ const REJECT = [
   /^tips? to /i, /making money is only/i,  // Überschriften
   /^use an atm/i,                        // allgemeiner Tipp ohne Fundort
   /plenty of opportunities|some gta 6 locations for money|make extra money\.?$/i, // Einleitungen
+  /\batm\b|trunk|house safe|store (them|your earnings)|deposit your/i,            // allgemeine Spiel-Tipps ohne Fundort
   /\b(cookie|newsletter|subscribe|sign up|advertis|share this|read more|click here)\b/i,
   /\b(interaktive karte|map: |unsere karte|komplettierer)\b/i,   // Werbetexte der Karte
   /\b(persönlich|mybase|seitenleiste)\b/i
@@ -79,6 +80,8 @@ export function isUsefulHint(text, context = "") {
   if (text.length < 40 || text.length > 300) return false;
   if (REJECT.some(r => r.test(text))) return false;
   if (FIRST_PERSON.test(text)) return false;
+  // Alles unter einer „Tips …“-Überschrift ist Ratgeber, kein Fundort.
+  if (/^tips?\b/i.test(context)) return false;
   // Doppelt zu einem Eintrag in der App? Die Überschrift zählt nur bei Guides/Einträgen,
   // die einen eigenen Namen in der Überschrift tragen (Exotic Animals, Kingfisher).
   const useContext = /exotic animals|kingfisher/i.test(context);
