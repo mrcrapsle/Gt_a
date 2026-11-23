@@ -2,8 +2,18 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>Leonida Vault – GTA 6 Guide &amp; Glitch Hub (DE)</title>
+  <meta name="description" content="GTA 6 Guide auf Deutsch: Fundorte, Glitches, Cheats und Sammel-Tracker – auch offline." />
+  <meta name="theme-color" content="#090612" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+  <link rel="icon" href="icons/icon-192.png" type="image/png" sizes="192x192" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Leonida Vault" />
   <style>
     :root {
       --bg: #090612;
@@ -32,7 +42,7 @@
         var(--bg);
       color: var(--text);
       min-height: 100vh;
-      padding-bottom: 84px;
+      padding-bottom: calc(84px + env(safe-area-inset-bottom));
     }
 
     header {
@@ -42,7 +52,7 @@
       background: rgba(9, 6, 18, 0.9);
       backdrop-filter: blur(12px);
       border-bottom: 1px solid var(--border);
-      padding: 12px 14px 10px;
+      padding: calc(12px + env(safe-area-inset-top)) 14px 10px;
     }
 
     .brand-row {
@@ -110,7 +120,7 @@
       border: 1px solid rgba(255, 255, 255, 0.12);
       background: var(--bg-card);
       color: var(--text);
-      font-size: 14px;
+      font-size: 16px;
       outline: none;
     }
 
@@ -128,6 +138,7 @@
       font-size: 14px;
     }
 
+    .search-wrap input::-webkit-search-cancel-button { -webkit-appearance: none; display: none; }
     .clear-search {
       position: absolute;
       right: 8px;
@@ -495,7 +506,7 @@
       color: var(--text);
       padding: 10px;
       font-family: inherit;
-      font-size: 13.5px;
+      font-size: 16px;
       resize: vertical;
       margin-bottom: 8px;
     }
@@ -523,7 +534,7 @@
       border-top: 1px solid var(--border);
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      padding: 6px 4px 8px;
+      padding: 6px 4px calc(8px + env(safe-area-inset-bottom));
     }
 
     .nav-btn {
@@ -540,7 +551,25 @@
       padding: 4px 2px;
     }
 
+    .nav-btn { position: relative; }
     .nav-btn .ico { font-size: 18px; }
+    .nav-count {
+      position: absolute;
+      top: 0;
+      left: calc(50% + 6px);
+      min-width: 17px;
+      height: 17px;
+      padding: 0 4px;
+      border-radius: 999px;
+      background: var(--pink);
+      color: #fff;
+      font-size: 10px;
+      line-height: 17px;
+      text-align: center;
+      display: none;
+    }
+    .nav-count.show { display: block; }
+    .nav-count.zero { background: #3a3352; color: var(--muted); }
     .nav-btn.active { color: var(--cyan); }
 
     .toast {
@@ -584,6 +613,73 @@
       line-height: 1.5;
     }
     ol.steps li { margin-bottom: 5px; }
+
+    .search-summary {
+      display: none;
+      gap: 6px;
+      margin-top: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .search-summary.show { display: flex; }
+    .search-summary::-webkit-scrollbar { display: none; }
+    .search-summary .chip { padding: 5px 10px; font-size: 11.5px; }
+    .search-summary .chip.zero { opacity: 0.45; }
+
+    .install-btn {
+      display: none;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, var(--pink), #b81dff);
+      color: #fff;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+    .install-btn.show { display: inline-block; }
+    .header-actions { display: flex; gap: 6px; align-items: center; }
+
+    .offline-pill {
+      display: none;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(255, 153, 0, 0.16);
+      border: 1px solid rgba(255, 153, 0, 0.4);
+      color: var(--orange);
+      white-space: nowrap;
+    }
+    .offline-pill.show { display: inline-block; }
+
+    .form-grid { display: grid; gap: 8px; margin-bottom: 8px; }
+    .form-grid input, .form-grid select {
+      width: 100%;
+      background: var(--bg-card-2);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      color: var(--text);
+      padding: 10px;
+      font-family: inherit;
+      font-size: 16px;
+    }
+    .form-grid textarea { min-height: 80px; margin-bottom: 0; }
+    details.add-box > summary {
+      cursor: pointer;
+      font-weight: 800;
+      font-size: 14px;
+      list-style: none;
+    }
+    details.add-box > summary::-webkit-details-marker { display: none; }
+    details.add-box[open] > summary { margin-bottom: 10px; }
+    .badge.custom { background: rgba(184, 29, 255, 0.18); color: #d49bff; border: 1px solid rgba(184, 29, 255, 0.4); }
+    .badge.tried { background: rgba(0, 230, 118, 0.15); color: var(--green); }
+    .btn-danger { background: rgba(255, 60, 60, 0.14); color: #ff8080; border: 1px solid rgba(255, 60, 60, 0.35); }
+    .card.tried { border-color: rgba(0, 230, 118, 0.35); }
+    .muted-small { font-size: 12px; color: var(--muted); margin: 6px 0 0; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   </style>
 </head>
 <body>
@@ -596,13 +692,18 @@
           <small>GTA 6 Guide, Glitches &amp; Cheats</small>
         </div>
       </div>
-      <span class="de-pill">🇩🇪 100% DE</span>
+      <div class="header-actions">
+        <span id="offlinePill" class="offline-pill">📴 Offline</span>
+        <button id="installBtn" class="install-btn" type="button">⬇️ Installieren</button>
+        <span class="de-pill">🇩🇪 100% DE</span>
+      </div>
     </div>
     <div class="search-wrap">
       <span class="search-icon">🔍</span>
       <input id="globalSearch" type="search" placeholder="Suche Waffen, Codes (0072, 7700), Glitches, Cheats..." />
       <button id="clearSearch" class="clear-search" aria-label="Suche leeren">✕</button>
     </div>
+    <div id="searchSummary" class="search-summary" aria-live="polite"></div>
   </header>
 
   <main>
@@ -619,6 +720,28 @@
       <div id="itemFilters" class="filter-row"></div>
       <div id="itemStatus" class="status-bar"></div>
       <div id="itemsList"></div>
+
+      <details class="card add-box" id="addItemBox">
+        <summary>➕ Eigenen Fundort hinzufügen</summary>
+        <form id="addItemForm" class="form-grid" autocomplete="off">
+          <label class="sr-only" for="ciName">Name</label>
+          <input id="ciName" placeholder="Name (z. B. Versteck am Leuchtturm)" maxlength="80" required />
+          <label class="sr-only" for="ciType">Typ</label>
+          <select id="ciType">
+            <option value="weapon">🔫 Waffe</option>
+            <option value="stash">🗝️ Versteck</option>
+          </select>
+          <label class="sr-only" for="ciRegion">Region</label>
+          <input id="ciRegion" placeholder="Region (z. B. Vice City)" maxlength="40" />
+          <label class="sr-only" for="ciCodes">Codes</label>
+          <input id="ciCodes" placeholder="Codes, mit Komma getrennt (z. B. Safe: 1234, Tür: 5678)" maxlength="120" />
+          <label class="sr-only" for="ciDesc">Beschreibung</label>
+          <textarea id="ciDesc" placeholder="Wie kommt man hin? Was liegt dort?" maxlength="600"></textarea>
+          <div class="card-actions">
+            <button type="submit" class="btn btn-primary">💾 Fundort speichern</button>
+          </div>
+        </form>
+      </details>
     </section>
 
     <!-- TAB 2: GLITCHES & MONEY -->
@@ -658,6 +781,7 @@
       </div>
 
       <div id="cheatFilters" class="filter-row"></div>
+      <div id="cheatStateFilters" class="filter-row"></div>
       <div id="cheatStatus" class="status-bar"></div>
       <div id="cheatsList"></div>
     </section>
@@ -713,6 +837,36 @@
         <p><strong>🦩 Echte Kokain-Flamingos erkennen:</strong> Nur rosa Flamingos mit <strong>schwarz-weißem Schnabel</strong> enthalten Päckchen. Normale Garten-Flamingos haben einen gelb-schwarzen Schnabel.</p>
       </div>
 
+      <div class="card" id="backupCard">
+        <h3 class="card-title">💾 Fortschritt sichern</h3>
+        <p>Dein Fortschritt liegt nur in diesem Browser. Sichere ihn als Datei oder Code, um ihn auf ein anderes Gerät mitzunehmen.</p>
+        <div class="card-actions">
+          <button id="exportFileBtn" class="btn btn-primary" type="button">⬇️ Als Datei sichern</button>
+          <button id="exportCodeBtn" class="btn btn-cyan" type="button">📋 Code kopieren</button>
+          <button id="importFileBtn" class="btn btn-cyan" type="button">📂 Datei laden</button>
+          <input id="importFileInput" type="file" accept="application/json,.json" hidden />
+        </div>
+        <details class="add-box" style="margin-top:10px;">
+          <summary style="font-size:13px;">📥 Code einfügen</summary>
+          <textarea id="importCodeInput" placeholder="Gesicherten Code hier einfügen..." style="min-height:80px;"></textarea>
+          <div class="card-actions">
+            <button id="importCodeBtn" class="btn btn-cyan" type="button">✅ Code übernehmen</button>
+          </div>
+        </details>
+        <p id="backupInfo" class="muted-small"></p>
+        <div class="card-actions" style="margin-top:10px;">
+          <button id="resetBtn" class="btn btn-danger" type="button">🗑️ Alles zurücksetzen</button>
+        </div>
+      </div>
+
+      <div class="card" id="installCard">
+        <h3 class="card-title">📲 Als App installieren</h3>
+        <p id="installHint">Leonida Vault funktioniert nach dem ersten Aufruf auch offline. Installiere die App auf deinem Homescreen für schnellen Zugriff beim Zocken.</p>
+        <div class="card-actions">
+          <button id="installBtn2" class="btn btn-primary" type="button" style="display:none;">⬇️ Jetzt installieren</button>
+        </div>
+      </div>
+
       <div class="card">
         <h3 class="card-title">📝 Dein eigenes Notizbuch</h3>
         <textarea id="noteInput" placeholder="Eigene Fundorte, Codes, Hehler-Preise oder Glitch-Notizen eintragen..."></textarea>
@@ -726,9 +880,9 @@
   </main>
 
   <nav class="bottom-nav">
-    <button class="nav-btn active" data-tab="items"><span class="ico">🔫</span>Items</button>
-    <button class="nav-btn" data-tab="glitches"><span class="ico">💸</span>Glitches</button>
-    <button class="nav-btn" data-tab="cheats"><span class="ico">🎮</span>Cheats</button>
+    <button class="nav-btn active" data-tab="items"><span class="ico">🔫</span>Items<span class="nav-count" data-count="items"></span></button>
+    <button class="nav-btn" data-tab="glitches"><span class="ico">💸</span>Glitches<span class="nav-count" data-count="glitches"></span></button>
+    <button class="nav-btn" data-tab="cheats"><span class="ico">🎮</span>Cheats<span class="nav-count" data-count="cheats"></span></button>
     <button class="nav-btn" data-tab="media"><span class="ico">🎬</span>Guides</button>
     <button class="nav-btn" data-tab="tools"><span class="ico">🧰</span>Helfer</button>
   </nav>
@@ -929,28 +1083,90 @@
       route: {},
       collectibles: { flamingos: 0, waink: 0, cards: 0, watches: 0 },
       notes: [],
-      platform: "ps5"
+      platform: "ps5",
+      cheatsTried: {},
+      cheatFavs: {},
+      customItems: []
     };
+    const BACKUP_APP_ID = "leonida-vault";
 
     let state = loadState();
     let itemFilter = "all";
     let glitchFilter = "all";
     let cheatFilter = "Alle";
+    let cheatStateFilter = "all";
     let searchQuery = "";
+
+    function isPlainObject(v) { return v !== null && typeof v === "object" && !Array.isArray(v); }
+
+    // Bringt geladene oder importierte Daten in eine sichere, vollständige Form.
+    function normalizeState(parsed) {
+      const base = structuredClone(defaultState);
+      if (!isPlainObject(parsed)) return base;
+      const boolMap = v => {
+        const out = {};
+        if (isPlainObject(v)) for (const [k, val] of Object.entries(v)) if (val === true) out[k] = true;
+        return out;
+      };
+      const collectibles = { ...base.collectibles };
+      if (isPlainObject(parsed.collectibles)) {
+        for (const c of COLLECTIBLES) {
+          const n = Number(parsed.collectibles[c.id]);
+          if (Number.isFinite(n)) collectibles[c.id] = Math.max(0, Math.min(c.max, Math.round(n)));
+        }
+      }
+      const customItems = Array.isArray(parsed.customItems)
+        ? parsed.customItems
+            .filter(i => isPlainObject(i) && typeof i.id === "string" && typeof i.name === "string" && i.name.trim())
+            .map(i => ({
+              id: i.id,
+              name: String(i.name).slice(0, 80),
+              type: i.type === "stash" ? "stash" : "weapon",
+              region: String(i.region || "").slice(0, 40),
+              desc: String(i.desc || "").slice(0, 600),
+              codes: Array.isArray(i.codes)
+                ? i.codes.filter(c => isPlainObject(c) && c.val).map(c => ({ label: String(c.label || c.val), val: String(c.val) }))
+                : []
+            }))
+        : [];
+      return {
+        found: boolMap(parsed.found),
+        favs: boolMap(parsed.favs),
+        route: boolMap(parsed.route),
+        collectibles,
+        notes: Array.isArray(parsed.notes) ? parsed.notes.filter(n => typeof n === "string") : [],
+        platform: parsed.platform === "xbox" ? "xbox" : "ps5",
+        cheatsTried: boolMap(parsed.cheatsTried),
+        cheatFavs: boolMap(parsed.cheatFavs),
+        customItems
+      };
+    }
 
     function loadState() {
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return structuredClone(defaultState);
-        const parsed = JSON.parse(raw);
-        return {
-          ...structuredClone(defaultState),
-          ...parsed,
-          collectibles: { ...defaultState.collectibles, ...(parsed.collectibles || {}) }
-        };
+        return normalizeState(JSON.parse(raw));
       } catch {
         return structuredClone(defaultState);
       }
+    }
+
+    function allItems() {
+      return [
+        ...ITEMS,
+        ...state.customItems.map(i => ({ ...i, chapter: "Eigener Eintrag", permanent: false, custom: true }))
+      ];
+    }
+
+    function itemMatches(item) {
+      return matchesSearch(`${item.name} ${item.region} ${item.desc} ${item.codes.map(c => `${c.label} ${c.val}`).join(" ")}`);
+    }
+    function glitchMatches(g) {
+      return matchesSearch(`${g.title} ${g.tag} ${g.steps.join(" ")} ${g.codes.map(c => `${c.label} ${c.val}`).join(" ")}`);
+    }
+    function cheatMatches(c) {
+      return matchesSearch(`${c.name} ${c.cat} ${c.unlock}`);
     }
 
     function saveState() {
@@ -966,19 +1182,21 @@
     }
 
     function copyText(val) {
+      const shown = val.length > 28 ? val.slice(0, 24) + "…" : val;
+      const ok = () => showToast("Kopiert: " + shown);
       if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(val).then(() => showToast("Kopiert: " + val)).catch(() => fallbackCopy(val));
+        navigator.clipboard.writeText(val).then(ok).catch(() => fallbackCopy(val, shown));
       } else {
-        fallbackCopy(val);
+        fallbackCopy(val, shown);
       }
     }
 
-    function fallbackCopy(val) {
+    function fallbackCopy(val, shown = val) {
       const ta = document.createElement("textarea");
       ta.value = val;
       document.body.appendChild(ta);
       ta.select();
-      try { document.execCommand("copy"); showToast("Kopiert: " + val); } catch { showToast("Code: " + val); }
+      try { document.execCommand("copy"); showToast("Kopiert: " + shown); } catch { showToast("Code: " + shown); }
       document.body.removeChild(ta);
     }
 
@@ -989,15 +1207,17 @@
 
     // ITEMS RENDER
     function renderItems() {
-      const total = ITEMS.length;
-      const foundCount = ITEMS.filter(i => state.found[i.id]).length;
-      const weaponCount = ITEMS.filter(i => i.type === "weapon").length;
-      const stashCount = ITEMS.filter(i => i.type === "stash").length;
+      const items = allItems();
+      const total = items.length;
+      const foundCount = items.filter(i => state.found[i.id]).length;
+      const weaponCount = items.filter(i => i.type === "weapon").length;
+      const stashCount = items.filter(i => i.type === "stash").length;
       const notFoundCount = total - foundCount;
-      const favCount = ITEMS.filter(i => state.favs[i.id]).length;
+      const favCount = items.filter(i => state.favs[i.id]).length;
+      const customCount = state.customItems.length;
 
       document.getElementById("itemsProgressText").textContent = `${foundCount} / ${total} gefunden`;
-      document.getElementById("itemsProgressBar").style.width = `${Math.round((foundCount / total) * 100)}%`;
+      document.getElementById("itemsProgressBar").style.width = `${total ? Math.round((foundCount / total) * 100) : 0}%`;
 
       const filters = [
         { id: "all", label: `Alle (${total})` },
@@ -1005,8 +1225,10 @@
         { id: "stash", label: `🗝️ Verstecke (${stashCount})` },
         { id: "notfound", label: `Nicht gefunden (${notFoundCount})` },
         { id: "found", label: `Gefunden (${foundCount})` },
-        { id: "fav", label: `⭐ Favoriten (${favCount})` }
+        { id: "fav", label: `⭐ Favoriten (${favCount})` },
+        ...(customCount ? [{ id: "custom", label: `✏️ Eigene (${customCount})` }] : [])
       ];
+      if (!filters.some(f => f.id === itemFilter)) itemFilter = "all";
 
       const fWrap = document.getElementById("itemFilters");
       fWrap.innerHTML = filters.map(f =>
@@ -1020,14 +1242,14 @@
         });
       });
 
-      const filtered = ITEMS.filter(item => {
+      const filtered = items.filter(item => {
         if (itemFilter === "weapon" && item.type !== "weapon") return false;
         if (itemFilter === "stash" && item.type !== "stash") return false;
         if (itemFilter === "found" && !state.found[item.id]) return false;
         if (itemFilter === "notfound" && state.found[item.id]) return false;
         if (itemFilter === "fav" && !state.favs[item.id]) return false;
-        const hay = `${item.name} ${item.region} ${item.desc} ${item.codes.map(c => c.val).join(" ")}`;
-        return matchesSearch(hay);
+        if (itemFilter === "custom" && !item.custom) return false;
+        return itemMatches(item);
       });
 
       const activeLabel = filters.find(f => f.id === itemFilter)?.label || "Alle";
@@ -1036,7 +1258,8 @@
 
       const list = document.getElementById("itemsList");
       if (!filtered.length) {
-        list.innerHTML = `<div class="empty-state">Keine Einträge für diesen Filter gefunden.</div>`;
+        list.innerHTML = emptyState("Keine Einträge für diesen Filter gefunden.", "items");
+        bindEmptyState(list);
         return;
       }
 
@@ -1047,20 +1270,22 @@
           ? `<span class="badge weapon">🔫 Waffe</span>`
           : `<span class="badge stash">🗝️ Versteck</span>`;
         const codesHtml = item.codes.length
-          ? `<div class="code-row">${item.codes.map(c => `<button class="code-btn" data-copy="${c.val}">📋 ${c.label}</button>`).join("")}</div>`
+          ? `<div class="code-row">${item.codes.map(c => `<button class="code-btn" data-copy="${escapeHtml(c.val)}">📋 ${escapeHtml(c.label)}</button>`).join("")}</div>`
           : "";
+        // Eigene Einträge stammen vom Nutzer und werden immer escaped.
+        const esc = item.custom ? escapeHtml : (x => x);
         return `
           <article class="card ${isFound ? "found" : ""}">
             <div class="card-top">
-              <h3 class="card-title">${item.name}</h3>
+              <h3 class="card-title">${esc(item.name)}</h3>
             </div>
             <div class="badges">
               ${typeBadge}
-              <span class="badge region">📍 ${item.region}</span>
-              <span class="badge">${item.chapter}</span>
+              ${item.region ? `<span class="badge region">📍 ${esc(item.region)}</span>` : ""}
+              ${item.custom ? `<span class="badge custom">✏️ Eigener Eintrag</span>` : `<span class="badge">${item.chapter}</span>`}
               ${item.permanent ? `<span class="badge perm">✓ Permanent</span>` : ""}
             </div>
-            <p>${item.desc}</p>
+            ${item.desc ? `<p style="white-space:pre-wrap;">${esc(item.desc)}</p>` : ""}
             ${codesHtml}
             <div class="card-actions">
               <button class="btn btn-found ${isFound ? "is-found" : ""}" data-toggle-found="${item.id}">
@@ -1069,6 +1294,7 @@
               <button class="btn btn-fav ${isFav ? "is-fav" : ""}" data-toggle-fav="${item.id}">
                 ${isFav ? "⭐ Favorit" : "☆ Merken"}
               </button>
+              ${item.custom ? `<button class="btn btn-danger" data-del-item="${escapeHtml(item.id)}">🗑️ Löschen</button>` : ""}
             </div>
           </article>
         `;
@@ -1077,7 +1303,7 @@
       list.querySelectorAll("[data-toggle-found]").forEach(btn => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.toggleFound;
-          state.found[id] = !state.found[id];
+          if (state.found[id]) delete state.found[id]; else state.found[id] = true;
           saveState();
           renderItems();
         });
@@ -1086,9 +1312,23 @@
       list.querySelectorAll("[data-toggle-fav]").forEach(btn => {
         btn.addEventListener("click", () => {
           const id = btn.dataset.toggleFav;
-          state.favs[id] = !state.favs[id];
+          if (state.favs[id]) delete state.favs[id]; else state.favs[id] = true;
           saveState();
           renderItems();
+        });
+      });
+
+      list.querySelectorAll("[data-del-item]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.delItem;
+          const it = state.customItems.find(i => i.id === id);
+          if (!it || !confirm(`„${it.name}“ wirklich löschen?`)) return;
+          state.customItems = state.customItems.filter(i => i.id !== id);
+          delete state.found[id];
+          delete state.favs[id];
+          saveState();
+          renderAll();
+          showToast("Fundort gelöscht");
         });
       });
 
@@ -1098,7 +1338,9 @@
     // GLITCHES RENDER
     function renderGlitches() {
       const routeWrap = document.getElementById("routeChecklist");
-      routeWrap.innerHTML = ROUTE_STEPS.map((text, idx) => {
+      const routeVisible = ROUTE_STEPS.map((text, idx) => ({ text, idx })).filter(r => matchesSearch(r.text));
+      document.getElementById("routeCard").style.display = routeVisible.length ? "" : "none";
+      routeWrap.innerHTML = routeVisible.map(({ text, idx }) => {
         const checked = !!state.route[idx];
         return `
           <label class="checklist-item ${checked ? "done" : ""}">
@@ -1110,7 +1352,7 @@
 
       routeWrap.querySelectorAll("[data-route]").forEach(cb => {
         cb.addEventListener("change", () => {
-          state.route[cb.dataset.route] = cb.checked;
+          if (cb.checked) state.route[cb.dataset.route] = true; else delete state.route[cb.dataset.route];
           saveState();
           renderGlitches();
         });
@@ -1138,8 +1380,7 @@
 
       const filtered = GLITCHES.filter(g => {
         if (glitchFilter !== "all" && g.category !== glitchFilter) return false;
-        const hay = `${g.title} ${g.steps.join(" ")} ${g.codes.map(c => c.val).join(" ")}`;
-        return matchesSearch(hay);
+        return glitchMatches(g);
       });
 
       document.getElementById("glitchStatus").innerHTML =
@@ -1147,7 +1388,8 @@
 
       const list = document.getElementById("glitchesList");
       if (!filtered.length) {
-        list.innerHTML = `<div class="empty-state">Kein Glitch oder Money-Guide passt zu deiner Suche.</div>`;
+        list.innerHTML = emptyState("Kein Glitch oder Money-Guide passt zu deiner Suche.", "glitches");
+        bindEmptyState(list);
         return;
       }
 
@@ -1189,13 +1431,35 @@
         });
       });
 
+      const triedCnt = CHEATS.filter(c => state.cheatsTried[c.id]).length;
+      const favCnt = CHEATS.filter(c => state.cheatFavs[c.id]).length;
+      const stateFilters = [
+        { id: "all", label: `Alle Status` },
+        { id: "open", label: `⬜ Offen (${CHEATS.length - triedCnt})` },
+        { id: "tried", label: `✅ Ausprobiert (${triedCnt})` },
+        { id: "fav", label: `⭐ Favoriten (${favCnt})` }
+      ];
+      const sWrap = document.getElementById("cheatStateFilters");
+      sWrap.innerHTML = stateFilters.map(f =>
+        `<button class="chip ${cheatStateFilter === f.id ? "active" : ""}" data-sfilter="${f.id}">${f.label}</button>`
+      ).join("");
+      sWrap.querySelectorAll(".chip").forEach(btn => {
+        btn.addEventListener("click", () => {
+          cheatStateFilter = btn.dataset.sfilter;
+          renderCheats();
+        });
+      });
+
       const filtered = CHEATS.filter(c => {
         if (cheatFilter !== "Alle" && c.cat !== cheatFilter) return false;
-        return matchesSearch(`${c.name} ${c.cat} ${c.unlock}`);
+        if (cheatStateFilter === "open" && state.cheatsTried[c.id]) return false;
+        if (cheatStateFilter === "tried" && !state.cheatsTried[c.id]) return false;
+        if (cheatStateFilter === "fav" && !state.cheatFavs[c.id]) return false;
+        return cheatMatches(c);
       });
 
       document.getElementById("cheatStatus").innerHTML =
-        `<span>Kategorie: <strong>${cheatFilter}</strong></span><span>${filtered.length} Cheats</span>`;
+        `<span>Kategorie: <strong>${cheatFilter}</strong> · ${triedCnt}/${CHEATS.length} ausprobiert</span><span>${filtered.length} Cheats</span>`;
 
       const arrowMap = {
         U: { sym: "▲", cls: "up" },
@@ -1210,12 +1474,16 @@
 
       const list = document.getElementById("cheatsList");
       if (!filtered.length) {
-        list.innerHTML = `<div class="empty-state">Kein Cheat gefunden.</div>`;
+        list.innerHTML = emptyState("Kein Cheat gefunden.", "cheats");
+        bindEmptyState(list);
         return;
       }
 
-      list.innerHTML = filtered.map(c => `
-        <article class="card">
+      list.innerHTML = filtered.map(c => {
+        const tried = !!state.cheatsTried[c.id];
+        const fav = !!state.cheatFavs[c.id];
+        return `
+        <article class="card ${tried ? "tried" : ""}">
           <div class="card-top">
             <h3 class="card-title">${c.name}</h3>
             <span class="badge region">${c.cat}</span>
@@ -1224,9 +1492,35 @@
             ${trigHtml}
             ${c.keys.map(k => `<span class="keycap ${arrowMap[k].cls}">${arrowMap[k].sym}</span>`).join("")}
           </div>
-          <p style="margin-bottom:0;font-size:12px;color:var(--muted);">🔓 Freischaltung: ${c.unlock}</p>
+          <p style="font-size:12px;color:var(--muted);">🔓 Freischaltung: ${c.unlock}</p>
+          <div class="card-actions">
+            <button class="btn btn-found ${tried ? "is-found" : ""}" data-toggle-tried="${c.id}">
+              ${tried ? "✅ Ausprobiert" : "⬜ Ausprobiert?"}
+            </button>
+            <button class="btn btn-fav ${fav ? "is-fav" : ""}" data-toggle-cfav="${c.id}">
+              ${fav ? "⭐ Favorit" : "☆ Merken"}
+            </button>
+          </div>
         </article>
-      `).join("");
+      `;
+      }).join("");
+
+      list.querySelectorAll("[data-toggle-tried]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.toggleTried;
+          if (state.cheatsTried[id]) delete state.cheatsTried[id]; else state.cheatsTried[id] = true;
+          saveState();
+          renderCheats();
+        });
+      });
+      list.querySelectorAll("[data-toggle-cfav]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.toggleCfav;
+          if (state.cheatFavs[id]) delete state.cheatFavs[id]; else state.cheatFavs[id] = true;
+          saveState();
+          renderCheats();
+        });
+      });
     }
 
     // TOOLS & NOTES RENDER
@@ -1275,6 +1569,7 @@
 
         nList.querySelectorAll("[data-del-note]").forEach(btn => {
           btn.addEventListener("click", () => {
+            if (!confirm("Diese Notiz wirklich löschen?")) return;
             state.notes.splice(parseInt(btn.dataset.delNote, 10), 1);
             saveState();
             renderTools();
@@ -1294,15 +1589,82 @@
     }
 
     // NAVIGATION
+    function switchTab(tab) {
+      document.querySelectorAll(".nav-btn").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+      document.querySelectorAll(".tab-section").forEach(s => s.classList.toggle("active", s.id === "tab-" + tab));
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      updateSearchSummary();
+    }
+    function currentTab() {
+      return document.querySelector(".nav-btn.active")?.dataset.tab || "items";
+    }
     document.querySelectorAll(".nav-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
-        document.querySelectorAll(".tab-section").forEach(s => s.classList.remove("active"));
-        btn.classList.add("active");
-        document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      });
+      btn.addEventListener("click", () => switchTab(btn.dataset.tab));
     });
+
+    // SUCHE ÜBER ALLE TABS
+    const SEARCH_TABS = [
+      { tab: "items", ico: "🔫", label: "Items" },
+      { tab: "glitches", ico: "💸", label: "Glitches" },
+      { tab: "cheats", ico: "🎮", label: "Cheats" }
+    ];
+    // Treffer unabhängig von den Tab-Filtern, damit die Zahl die echte Fundmenge zeigt.
+    function searchCounts() {
+      return {
+        items: allItems().filter(itemMatches).length,
+        glitches: GLITCHES.filter(glitchMatches).length + ROUTE_STEPS.filter(t => matchesSearch(t)).length,
+        cheats: CHEATS.filter(cheatMatches).length
+      };
+    }
+    function updateSearchSummary() {
+      const box = document.getElementById("searchSummary");
+      const badges = document.querySelectorAll("[data-count]");
+      if (!searchQuery) {
+        box.classList.remove("show");
+        box.innerHTML = "";
+        badges.forEach(b => b.classList.remove("show", "zero"));
+        return;
+      }
+      const counts = searchCounts();
+      const total = counts.items + counts.glitches + counts.cheats;
+      const active = currentTab();
+      box.innerHTML = `<span class="chip" style="cursor:default;">${total} Treffer</span>` +
+        SEARCH_TABS.map(t => `<button class="chip ${active === t.tab ? "active" : ""} ${counts[t.tab] ? "" : "zero"}" data-jump="${t.tab}">${t.ico} ${t.label}: ${counts[t.tab]}</button>`).join("");
+      box.classList.add("show");
+      box.querySelectorAll("[data-jump]").forEach(b => b.addEventListener("click", () => switchTab(b.dataset.jump)));
+      badges.forEach(b => {
+        const n = counts[b.dataset.count];
+        b.textContent = n;
+        b.classList.add("show");
+        b.classList.toggle("zero", n === 0);
+      });
+    }
+    // Leerer Zustand: verweist auf Tabs, in denen die Suche doch etwas findet.
+    function emptyState(msg, tab) {
+      let hint = "";
+      if (searchQuery) {
+        const counts = searchCounts();
+        const others = SEARCH_TABS.filter(t => t.tab !== tab && counts[t.tab] > 0);
+        if (others.length) {
+          hint = `<div class="card-actions" style="justify-content:center;margin-top:10px;">` +
+            others.map(t => `<button class="btn btn-cyan" data-jump="${t.tab}">${t.ico} ${counts[t.tab]} Treffer in ${t.label}</button>`).join("") +
+            `</div>`;
+        }
+      }
+      return `<div class="empty-state">${msg}${hint}</div>`;
+    }
+    function bindEmptyState(root) {
+      root.querySelectorAll("[data-jump]").forEach(b => b.addEventListener("click", () => switchTab(b.dataset.jump)));
+    }
+
+    function renderAll() {
+      renderItems();
+      renderGlitches();
+      renderCheats();
+      renderTools();
+      updateSearchSummary();
+      updateBackupInfo();
+    }
 
     // PLATFORM SWITCH
     document.getElementById("btnPs5").addEventListener("click", () => {
@@ -1325,6 +1687,7 @@
       inp.value = "";
       saveState();
       renderTools();
+      updateBackupInfo();
       showToast("Notiz gespeichert!");
     });
 
@@ -1333,31 +1696,196 @@
       copyText(state.notes.join("\n---\n"));
     });
 
+    // EIGENE FUNDORTE
+    function parseCodes(str) {
+      return str.split(",").map(x => x.trim()).filter(Boolean).map(part => {
+        const m = part.match(/^(.*?):\s*(.+)$/);
+        return m ? { label: part, val: m[2].trim() } : { label: part, val: part };
+      });
+    }
+    document.getElementById("addItemForm").addEventListener("submit", e => {
+      e.preventDefault();
+      const name = document.getElementById("ciName").value.trim();
+      if (!name) return showToast("Bitte einen Namen eingeben!");
+      state.customItems.push({
+        id: "custom-" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+        name,
+        type: document.getElementById("ciType").value === "stash" ? "stash" : "weapon",
+        region: document.getElementById("ciRegion").value.trim(),
+        codes: parseCodes(document.getElementById("ciCodes").value),
+        desc: document.getElementById("ciDesc").value.trim()
+      });
+      saveState();
+      e.target.reset();
+      document.getElementById("addItemBox").open = false;
+      itemFilter = "custom";
+      renderItems();
+      updateSearchSummary();
+      updateBackupInfo();
+      showToast("Fundort gespeichert!");
+    });
+
+    // SICHERUNG (EXPORT / IMPORT / RESET)
+    function buildBackup() {
+      return { app: BACKUP_APP_ID, version: 1, exportedAt: new Date().toISOString(), state };
+    }
+    function encodeBackup() {
+      const json = JSON.stringify(buildBackup());
+      return btoa(String.fromCharCode(...new TextEncoder().encode(json)));
+    }
+    function parseBackup(text) {
+      text = text.trim();
+      let json = text;
+      if (!text.startsWith("{")) {
+        const bin = atob(text.replace(/\s+/g, ""));
+        json = new TextDecoder().decode(Uint8Array.from(bin, ch => ch.charCodeAt(0)));
+      }
+      const data = JSON.parse(json);
+      // Akzeptiert eigene Sicherungen und rohe Zustands-Objekte.
+      const raw = isPlainObject(data) && data.app === BACKUP_APP_ID ? data.state : data;
+      if (!isPlainObject(raw) || !["found", "collectibles", "notes", "customItems", "cheatsTried"].some(k => k in raw)) {
+        throw new Error("Keine Leonida-Vault-Sicherung");
+      }
+      return normalizeState(raw);
+    }
+    function applyImport(text) {
+      let next;
+      try {
+        next = parseBackup(text);
+      } catch {
+        return showToast("❌ Ungültige Sicherung");
+      }
+      if (!confirm("Aktuellen Fortschritt durch die Sicherung ersetzen?")) return;
+      state = next;
+      saveState();
+      renderAll();
+      showToast("✅ Sicherung geladen");
+    }
+    function updateBackupInfo() {
+      const items = allItems();
+      const parts = [
+        `${items.filter(i => state.found[i.id]).length}/${items.length} Fundorte`,
+        `${CHEATS.filter(c => state.cheatsTried[c.id]).length}/${CHEATS.length} Cheats`,
+        `${state.notes.length} Notizen`
+      ];
+      if (state.customItems.length) parts.push(`${state.customItems.length} eigene Fundorte`);
+      document.getElementById("backupInfo").textContent = "Aktuell: " + parts.join(" · ");
+    }
+
+    document.getElementById("exportFileBtn").addEventListener("click", () => {
+      const blob = new Blob([JSON.stringify(buildBackup(), null, 2)], { type: "application/json" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `leonida-vault-${new Date().toISOString().slice(0, 10)}.json`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+      showToast("Sicherung heruntergeladen");
+    });
+    document.getElementById("exportCodeBtn").addEventListener("click", () => copyText(encodeBackup()));
+    const importFileInput = document.getElementById("importFileInput");
+    document.getElementById("importFileBtn").addEventListener("click", () => importFileInput.click());
+    importFileInput.addEventListener("change", async () => {
+      const file = importFileInput.files[0];
+      importFileInput.value = "";
+      if (!file) return;
+      if (file.size > 2_000_000) return showToast("❌ Datei zu groß");
+      applyImport(await file.text());
+    });
+    document.getElementById("importCodeBtn").addEventListener("click", () => {
+      const inp = document.getElementById("importCodeInput");
+      if (!inp.value.trim()) return showToast("Bitte erst einen Code einfügen!");
+      applyImport(inp.value);
+      inp.value = "";
+    });
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      if (!confirm("Wirklich ALLES zurücksetzen? Fundorte, Cheats, Zähler, Notizen und eigene Fundorte gehen verloren.\n\nTipp: Vorher eine Sicherung anlegen.")) return;
+      state = structuredClone(defaultState);
+      saveState();
+      itemFilter = "all";
+      renderAll();
+      showToast("Alles zurückgesetzt");
+    });
+
     // SEARCH
     const searchInput = document.getElementById("globalSearch");
     const clearBtn = document.getElementById("clearSearch");
-    searchInput.addEventListener("input", () => {
-      searchQuery = searchInput.value.trim();
+    function runSearch() {
       clearBtn.style.display = searchQuery ? "block" : "none";
       renderItems();
       renderGlitches();
       renderCheats();
+      updateSearchSummary();
+    }
+    searchInput.addEventListener("input", () => {
+      searchQuery = searchInput.value.trim();
+      runSearch();
     });
     clearBtn.addEventListener("click", () => {
       searchInput.value = "";
       searchQuery = "";
-      clearBtn.style.display = "none";
-      renderItems();
-      renderGlitches();
-      renderCheats();
+      runSearch();
+      searchInput.focus();
     });
+
+    // PWA: OFFLINE-FÄHIGKEIT & INSTALLATION
+    const installBtns = [document.getElementById("installBtn"), document.getElementById("installBtn2")];
+    let deferredInstall = null;
+    const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
+
+    window.addEventListener("beforeinstallprompt", e => {
+      e.preventDefault();
+      deferredInstall = e;
+      installBtns[0].classList.add("show");
+      installBtns[1].style.display = "";
+    });
+    installBtns.forEach(btn => btn.addEventListener("click", async () => {
+      if (!deferredInstall) return;
+      deferredInstall.prompt();
+      await deferredInstall.userChoice.catch(() => {});
+      deferredInstall = null;
+      installBtns[0].classList.remove("show");
+      installBtns[1].style.display = "none";
+    }));
+    window.addEventListener("appinstalled", () => showToast("📲 App installiert!"));
+
+    (function setInstallHint() {
+      const hint = document.getElementById("installHint");
+      if (isStandalone()) {
+        hint.textContent = "✅ Du nutzt Leonida Vault bereits als installierte App. Sie funktioniert auch offline.";
+      } else if (/iphone|ipad|ipod/i.test(navigator.userAgent)) {
+        hint.innerHTML = "Auf iPhone/iPad: Tippe in Safari auf <strong>Teilen</strong> (□↑) und dann auf <strong>„Zum Home-Bildschirm“</strong>. Danach funktioniert die App auch offline.";
+      }
+    })();
+
+    function updateOnline() {
+      document.getElementById("offlinePill").classList.toggle("show", !navigator.onLine);
+    }
+    window.addEventListener("online", updateOnline);
+    window.addEventListener("offline", updateOnline);
+    updateOnline();
+
+    if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("sw.js").then(reg => {
+          // Neue Version verfügbar → Hinweis und beim nächsten Öffnen aktiv.
+          reg.addEventListener("updatefound", () => {
+            const nw = reg.installing;
+            nw && nw.addEventListener("statechange", () => {
+              if (nw.state === "installed" && navigator.serviceWorker.controller) {
+                showToast("🔄 Update geladen – App neu öffnen");
+              }
+            });
+          });
+        }).catch(() => {});
+      });
+    }
 
     // INIT
     bindCopyButtons(document);
-    renderItems();
-    renderGlitches();
-    renderCheats();
-    renderTools();
+    renderAll();
   </script>
 </body>
 </html>
