@@ -27,7 +27,8 @@ const KNOWN_TERMS = [
   /nipper/i, /gorse/i, /gutterball/i, /couch potato|mustang .357/i,
   /waffenfreak|raketenwerfer|hauners h-at/i,
   /corkers/i,
-  /exotic animals/i                      // Glitch-Guide in index.html
+  /exotic animals/i,                     // Glitch-Guide in index.html
+  /treasure hunt|kenton|leonida keys/i   // Guide "Schatzsuche um die Leonida Keys"
 ];
 // Ich-Form und Nutzerkommentare: keine Fundort-Angaben, sondern Meinungen.
 const FIRST_PERSON = /\b(ich|mein|meine|meinen|mir|mich)\b|\bI\b|\bmy\b|\bme\b|\bwe\b/i;
