@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-11-23T12:05:39.599Z",
-  "note": "Automatisch gesammelt. Nichts davon ist im Spiel bestätigt.",
+  "generatedAt": "2026-11-23T12:15:55.885Z",
+  "note": "Automatisch gesammelt. Nichts davon ist im Spiel bestätigt. Quellen sind größtenteils Englisch.",
   "sources": [
     {
       "name": "GTABase (DE, Karte)",
       "url": "https://www.gtabase.com/de/gta-6/karte/",
       "error": null,
-      "found": 5
+      "found": 1
     },
     {
       "name": "Beebom (Geld-Spots)",
@@ -17,143 +17,147 @@
   ],
   "candidates": [
     {
-      "id": "cand-Z3RhIDYgbWFwOiBp",
-      "text": "GTA 6 Map: Interaktive Karte, Sammelobjekte und Fundorte",
+      "id": "cand-aWNoIGhhYmUgZWlu",
+      "text": "Ich habe ein Geheimnis entdeckt: Direkt neben dem Marabunta-Lager, in der Nähe von Millport, gibt es einen Behälter mit einer Mahlzeit.",
+      "context": "Erkunde unsere vollständige GTA 6 Datenbank",
       "source": "GTABase (DE, Karte)",
       "sourceUrl": "https://www.gtabase.com/de/gta-6/karte/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
-      "id": "cand-dW5zZXJlIGthcnRl",
-      "text": "Unsere Karte des Bundesstaates Leonida wurde für Komplettierer entwickelt und ermöglicht es dir, Sammelobjekte zu verfolgen, Waffenaufnahmen zu entdecken, Immobilien zu finden und jeden Winkel von Vice City zu erkunden.",
-      "source": "GTABase (DE, Karte)",
-      "sourceUrl": "https://www.gtabase.com/de/gta-6/karte/",
+      "id": "cand-ZnJvbSB3YXJlaG91",
+      "text": "From warehouses filled with cocaine and cash to secret stashes, crashed planes, and underwater shipwrecks, Leonida has plenty of opportunities to make extra money.",
+      "context": null,
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
-      "id": "cand-YWxsZXMgd2lyZCB1",
-      "text": "Alles wird unter Persönlich in der Seitenleiste neben deinen Safehouses und Garagen gesammelt, ist nur für dich sichtbar und wird mit deinem MyBase-Konto synchronisiert.",
-      "source": "GTABase (DE, Karte)",
-      "sourceUrl": "https://www.gtabase.com/de/gta-6/karte/",
-      "status": "ungeprüft"
-    },
-    {
-      "id": "cand-QGdyYW50IGRhcyB3",
-      "text": "@Grant Das wird nicht passieren, weil es ein Vermögen kosten würde, daher weniger Geld für andere Teile des Spiels wie weniger Details.",
-      "source": "GTABase (DE, Karte)",
-      "sourceUrl": "https://www.gtabase.com/de/gta-6/karte/",
-      "status": "ungeprüft"
-    },
-    {
-      "id": "cand-ZXMgaXN0IHNjaGxp",
-      "text": "Es ist schlimmer für dich, nicht für die meisten Leute, jeder würde gerne echte Automarken und echte Waffen sehen",
-      "source": "GTABase (DE, Karte)",
-      "sourceUrl": "https://www.gtabase.com/de/gta-6/karte/",
+      "id": "cand-c29tZSBndGEgNiBs",
+      "text": "Some GTA 6 locations for money also contain powerful weapons, unique weapon variants, and rare collectible cards.",
+      "context": null,
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
       "id": "cand-Zm9sbG93IHRoZSBn",
       "text": "Follow the given instructions and open the vent beside the generator to collect $1,300.",
+      "context": "Exotic Animals Front in Key Lento",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
       "id": "cand-Y3JhY2sgaXQgb3Bl",
       "text": "Crack it open to collect another $900 and some valuables.",
+      "context": "Exotic Animals Front in Key Lento",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
       "id": "cand-eW91IGNhbiBhbHNv",
       "text": "You can also grab $100 from the cash register.",
+      "context": "Exotic Animals Front in Key Lento",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
       "id": "cand-ZW5jb3VudGVycyBy",
       "text": "Encounters reward you with an average duffel bag containing $1,280 worth of illegal products .",
+      "context": "Random Events Involving Broken-Down Vehicles",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-b25jZSB5b3UgYXJy",
+      "text": "Once you arrive, search the ground underneath the burning aircraft for cocaine.",
+      "context": "Plane Crash Sites in Grassrivers",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
       "id": "cand-eW91IGNhbiBjb2xs",
       "text": "You can collect around $1,000 worth of illegal products from most crash sites.",
+      "context": "Plane Crash Sites in Grassrivers",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
-      "id": "cand-c2FmZSA6IGNvbnRh",
-      "text": "Safe : Contains additional cash, cocaine, and the rare Leroy Rook collectible card.",
+      "id": "cand-aW5zaWRlLCB5b3Ug",
+      "text": "Inside, you will find a weapon case containing the Marabunta Grande Hobo Shotgun, a unique weapon variant that can be recovered from your weapon locker.",
+      "context": "Industrial Storage Building in Hamlet",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
-      "id": "cand-dGhlIGxlcm95IHJv",
-      "text": "The Leroy Rook card is particularly valuable, as you can sell it at a pawn shop for an additional $6,000.",
+      "id": "cand-bWFrZSBzdXJlIHRv",
+      "text": "Make sure to investigate the area thoroughly, as you can collect a useful weapon and some extra money without traveling too far from Hamlet.",
+      "context": "Industrial Storage Building in Hamlet",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
-      "id": "cand-eW91IGNhbiB1c2Ug",
-      "text": "You can use the unlimited money glitch in GTA 6 here to make a lot of money.",
+      "id": "cand-aXQgaXMgbG9jYXRl",
+      "text": "It is located south of Hamlet, around three miles from Jason’s house, and contains a large stash of cash, illegal products, weapons, and a rare collectible card.",
+      "context": "Warehouse in South Vice-Dale County",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
-      "id": "cand-dGhpcyBsb2NhdGlv",
-      "text": "This location can provide around $13,000 in cash and illegal products, with the collectible card adding another $6,000 in potential value.",
+      "id": "cand-dHlwZSA5IHNtZyA6",
+      "text": "Type 9 SMG : Located on the floor immediately to your right when you enter.",
+      "context": "Warehouse in South Vice-Dale County",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
-      "id": "cand-b3VyIHRyZWFzdXJl",
-      "text": "Our treasure hunt payout was $2,600, while individual coins fetched $200 each.",
+      "id": "cand-ZHVrZSA1NTYgYXNz",
+      "text": "Duke 556 Assault Rifle : Lying on the floor near one of the dead bodies.",
+      "context": "Warehouse in South Vice-Dale County",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
-      "id": "cand-c2VhcmNoIHRoZSBy",
-      "text": "Search the room for cash and open the safe to collect more than $1,000.",
+      "id": "cand-Y29jYWluZSA6IHNl",
+      "text": "Cocaine : Several bundles are hidden inside the teddy bear van and on tables in the nearby offices.",
+      "context": "Warehouse in South Vice-Dale County",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     },
     {
-      "id": "cand-dGhlcmUgaXMgYWxz",
-      "text": "There is also around $640 worth of cocaine on a nearby table, along with additional cash.",
+      "id": "cand-a2FsaW5nYSA1MCBw",
+      "text": "Kalinga 50 Pistol : Found on a table inside one of the offices.",
+      "context": "Warehouse in South Vice-Dale County",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
-      "status": "ungeprüft"
-    },
-    {
-      "id": "cand-dGlwcyB0byBrZWVw",
-      "text": "Tips to Keep Your Money Safe in GTA 6 Making money is only half the job in GTA 6 from these early locations.",
-      "source": "Beebom (Geld-Spots)",
-      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
-      "status": "ungeprüft"
-    },
-    {
-      "id": "cand-dXNlIGFuIGF0bSBv",
-      "text": "Use an ATM or your house&rsquo;s safe to store your earnings.",
-      "source": "Beebom (Geld-Spots)",
-      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
-      "status": "ungeprüft"
-    },
-    {
-      "id": "cand-aXQgY29udGFpbnMg",
-      "text": "It contains around $13,000 in cash and illegal products, along with a Leroy Rook collectible card worth another $6,000.",
-      "source": "Beebom (Geld-Spots)",
-      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "language": "en",
       "status": "ungeprüft"
     }
   ]
