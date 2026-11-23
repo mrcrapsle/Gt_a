@@ -868,6 +868,15 @@
         </div>
       </div>
 
+      <div class="card" id="updatesCard">
+        <h3 class="card-title">🔄 Updates aus dem Netz</h3>
+        <p class="muted-small" id="updatesMeta">Prüft die täglich gesammelten Hinweise. Nichts wird ohne dein Zutun übernommen.</p>
+        <div class="card-actions">
+          <button id="checkUpdatesBtn" class="btn btn-primary" type="button">🔄 Nach Updates suchen</button>
+        </div>
+        <div id="updatesList"></div>
+      </div>
+
       <div class="card">
         <h3 class="card-title">📝 Dein eigenes Notizbuch</h3>
         <textarea id="noteInput" placeholder="Eigene Fundorte, Codes, Hehler-Preise oder Glitch-Notizen eintragen..."></textarea>
@@ -1127,7 +1136,8 @@
       cheatFavs: {},
       customItems: [],
       glitchDone: {},
-      lastBackupAt: null
+      lastBackupAt: null,
+      seenUpdates: {}
     };
     const BACKUP_APP_ID = "leonida-vault";
 
@@ -1180,6 +1190,7 @@
         cheatsTried: boolMap(parsed.cheatsTried),
         cheatFavs: boolMap(parsed.cheatFavs),
         glitchDone: boolMap(parsed.glitchDone),
+        seenUpdates: boolMap(parsed.seenUpdates),
         customItems,
         lastBackupAt: typeof parsed.lastBackupAt === "string" && !isNaN(Date.parse(parsed.lastBackupAt)) ? parsed.lastBackupAt : null
       };
@@ -1965,6 +1976,57 @@
         }).catch(() => {});
       });
     }
+
+    // UPDATES AUS DEM NETZ (data/updates.json, von der GitHub-Action befüllt)
+    async function checkUpdates() {
+      const btn = document.getElementById("checkUpdatesBtn");
+      const meta = document.getElementById("updatesMeta");
+      const list = document.getElementById("updatesList");
+      btn.disabled = true;
+      btn.textContent = "⏳ Prüfe …";
+      try {
+        const res = await fetch("data/updates.json?t=" + Date.now(), { cache: "no-store" });
+        if (!res.ok) throw new Error("HTTP " + res.status);
+        const data = await res.json();
+        const cands = Array.isArray(data.candidates) ? data.candidates : [];
+        const fresh = cands.filter(c => c && typeof c.id === "string" && typeof c.text === "string" && !state.seenUpdates[c.id]);
+        const when = data.generatedAt ? new Date(data.generatedAt).toLocaleString("de-DE") : "noch nie";
+        meta.textContent = `Letzte Suche: ${when} · ${fresh.length} neu zu prüfen · ${cands.length} gesamt`;
+        if (!fresh.length) {
+          list.innerHTML = `<p class="muted-small">Keine neuen Hinweise.</p>`;
+          return;
+        }
+        list.innerHTML = fresh.map(c => `
+          <div class="note-item" style="flex-direction:column;">
+            <span style="white-space:pre-wrap;word-break:break-word;">${escapeHtml(c.text)}</span>
+            <span class="muted-small">Quelle: ${escapeHtml(String(c.source || "?"))} · ${escapeHtml(String(c.status || "ungeprüft"))}</span>
+            <div class="card-actions">
+              <button class="btn btn-cyan" data-take="${escapeHtml(c.id)}">📝 Als Notiz übernehmen</button>
+              <button class="btn btn-danger" data-skip="${escapeHtml(c.id)}">✖ Verwerfen</button>
+            </div>
+          </div>`).join("");
+        const byId = Object.fromEntries(fresh.map(c => [c.id, c]));
+        list.querySelectorAll("[data-take]").forEach(b => b.addEventListener("click", () => {
+          const c = byId[b.dataset.take];
+          if (!c) return;
+          state.notes.unshift(`[Update, ungeprüft – ${c.source}] ${c.text}`);
+          state.seenUpdates[c.id] = true;
+          saveState(); renderTools(); updateBackupInfo(); checkUpdates();
+          showToast("Als Notiz übernommen");
+        }));
+        list.querySelectorAll("[data-skip]").forEach(b => b.addEventListener("click", () => {
+          state.seenUpdates[b.dataset.skip] = true;
+          saveState(); checkUpdates();
+        }));
+      } catch (e) {
+        meta.textContent = "Keine Verbindung oder keine Update-Datei gefunden. Prüfe deine Verbindung und versuche es später noch einmal.";
+        list.innerHTML = "";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "🔄 Nach Updates suchen";
+      }
+    }
+    document.getElementById("checkUpdatesBtn").addEventListener("click", checkUpdates);
 
     // INIT
     bindCopyButtons(document);
