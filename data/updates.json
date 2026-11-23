@@ -1,6 +1,160 @@
 {
-  "generatedAt": null,
-  "note": "Noch kein Lauf. Der Workflow 'Update-Suche' schreibt diese Datei.",
-  "sources": [],
-  "candidates": []
+  "generatedAt": "2026-11-23T12:05:39.599Z",
+  "note": "Automatisch gesammelt. Nichts davon ist im Spiel bestätigt.",
+  "sources": [
+    {
+      "name": "GTABase (DE, Karte)",
+      "url": "https://www.gtabase.com/de/gta-6/karte/",
+      "error": null,
+      "found": 5
+    },
+    {
+      "name": "Beebom (Geld-Spots)",
+      "url": "https://beebom.com/gta-6-best-money-spots/",
+      "error": null,
+      "found": 15
+    }
+  ],
+  "candidates": [
+    {
+      "id": "cand-Z3RhIDYgbWFwOiBp",
+      "text": "GTA 6 Map: Interaktive Karte, Sammelobjekte und Fundorte",
+      "source": "GTABase (DE, Karte)",
+      "sourceUrl": "https://www.gtabase.com/de/gta-6/karte/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-dW5zZXJlIGthcnRl",
+      "text": "Unsere Karte des Bundesstaates Leonida wurde für Komplettierer entwickelt und ermöglicht es dir, Sammelobjekte zu verfolgen, Waffenaufnahmen zu entdecken, Immobilien zu finden und jeden Winkel von Vice City zu erkunden.",
+      "source": "GTABase (DE, Karte)",
+      "sourceUrl": "https://www.gtabase.com/de/gta-6/karte/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-YWxsZXMgd2lyZCB1",
+      "text": "Alles wird unter Persönlich in der Seitenleiste neben deinen Safehouses und Garagen gesammelt, ist nur für dich sichtbar und wird mit deinem MyBase-Konto synchronisiert.",
+      "source": "GTABase (DE, Karte)",
+      "sourceUrl": "https://www.gtabase.com/de/gta-6/karte/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-QGdyYW50IGRhcyB3",
+      "text": "@Grant Das wird nicht passieren, weil es ein Vermögen kosten würde, daher weniger Geld für andere Teile des Spiels wie weniger Details.",
+      "source": "GTABase (DE, Karte)",
+      "sourceUrl": "https://www.gtabase.com/de/gta-6/karte/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-ZXMgaXN0IHNjaGxp",
+      "text": "Es ist schlimmer für dich, nicht für die meisten Leute, jeder würde gerne echte Automarken und echte Waffen sehen",
+      "source": "GTABase (DE, Karte)",
+      "sourceUrl": "https://www.gtabase.com/de/gta-6/karte/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-Zm9sbG93IHRoZSBn",
+      "text": "Follow the given instructions and open the vent beside the generator to collect $1,300.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-Y3JhY2sgaXQgb3Bl",
+      "text": "Crack it open to collect another $900 and some valuables.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-eW91IGNhbiBhbHNv",
+      "text": "You can also grab $100 from the cash register.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-ZW5jb3VudGVycyBy",
+      "text": "Encounters reward you with an average duffel bag containing $1,280 worth of illegal products .",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-eW91IGNhbiBjb2xs",
+      "text": "You can collect around $1,000 worth of illegal products from most crash sites.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-c2FmZSA6IGNvbnRh",
+      "text": "Safe : Contains additional cash, cocaine, and the rare Leroy Rook collectible card.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-dGhlIGxlcm95IHJv",
+      "text": "The Leroy Rook card is particularly valuable, as you can sell it at a pawn shop for an additional $6,000.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-eW91IGNhbiB1c2Ug",
+      "text": "You can use the unlimited money glitch in GTA 6 here to make a lot of money.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-dGhpcyBsb2NhdGlv",
+      "text": "This location can provide around $13,000 in cash and illegal products, with the collectible card adding another $6,000 in potential value.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-b3VyIHRyZWFzdXJl",
+      "text": "Our treasure hunt payout was $2,600, while individual coins fetched $200 each.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-c2VhcmNoIHRoZSBy",
+      "text": "Search the room for cash and open the safe to collect more than $1,000.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-dGhlcmUgaXMgYWxz",
+      "text": "There is also around $640 worth of cocaine on a nearby table, along with additional cash.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-dGlwcyB0byBrZWVw",
+      "text": "Tips to Keep Your Money Safe in GTA 6 Making money is only half the job in GTA 6 from these early locations.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-dXNlIGFuIGF0bSBv",
+      "text": "Use an ATM or your house&rsquo;s safe to store your earnings.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    },
+    {
+      "id": "cand-aXQgY29udGFpbnMg",
+      "text": "It contains around $13,000 in cash and illegal products, along with a Leroy Rook collectible card worth another $6,000.",
+      "source": "Beebom (Geld-Spots)",
+      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
+      "status": "ungeprüft"
+    }
+  ]
 }
