@@ -708,4 +708,656 @@
 
       <div class="card">
         <h3 class="card-title">💡 Wichtige Pro-Tipps für Leonida</h3>
-        <p><strong>🚗 Kofferraum als Waffenlager:</strong> Öffne den Kofferraum deines persönlichen Fahrzeugs (Δ / Y) und halt
+        <p><strong>🚗 Kofferraum als Waffenlager:</strong> Öffne den Kofferraum deines persönlichen Fahrzeugs (Δ / Y) und halte L1 / LB, um dein komplettes Loadout zu wechseln.</p>
+        <p><strong>👁️ Fokus-Modus nutzen:</strong> Drücke L3 + R3 (PS5) bzw. LS + RS (Xbox) für Zeitlupe im Kampf und die Detektiv-Sicht zum Aufspüren von Loot &amp; Verstecken.</p>
+        <p><strong>🦩 Echte Kokain-Flamingos erkennen:</strong> Nur rosa Flamingos mit <strong>schwarz-weißem Schnabel</strong> enthalten Päckchen. Normale Garten-Flamingos haben einen gelb-schwarzen Schnabel.</p>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">📝 Dein eigenes Notizbuch</h3>
+        <textarea id="noteInput" placeholder="Eigene Fundorte, Codes, Hehler-Preise oder Glitch-Notizen eintragen..."></textarea>
+        <div class="card-actions">
+          <button id="saveNoteBtn" class="btn btn-primary">💾 Notiz speichern</button>
+          <button id="exportNotesBtn" class="btn btn-cyan">📋 Alle kopieren</button>
+        </div>
+        <div id="notesList"></div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-tab="items"><span class="ico">🔫</span>Items</button>
+    <button class="nav-btn" data-tab="glitches"><span class="ico">💸</span>Glitches</button>
+    <button class="nav-btn" data-tab="cheats"><span class="ico">🎮</span>Cheats</button>
+    <button class="nav-btn" data-tab="media"><span class="ico">🎬</span>Guides</button>
+    <button class="nav-btn" data-tab="tools"><span class="ico">🧰</span>Helfer</button>
+  </nav>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    const ITEMS = [
+      {
+        id: "crabshack-vf5",
+        name: "Crabshack VF5 (Legendäre SMG)",
+        type: "weapon",
+        region: "Pelican Valley",
+        chapter: "Ab Kapitel 1",
+        permanent: true,
+        codes: [
+          { label: "PC: CLEAVES", val: "CLEAVES" },
+          { label: "Safe: 0072", val: "0072" },
+          { label: "Tür: 0212", val: "0212" }
+        ],
+        desc: "Verlassener Forschungs-Außenposten links von Pelican Valley (per Boot erreichbar). Schalte am Sicherungskasten den Strom ein, entsperre den PC mit CLEAVES, öffne den Safe (0072 → +1.000 $) und öffne die Bootshaus-Tür mit 0212 für die legendäre SMG plus eine Tasche mit 10.000 $."
+      },
+      {
+        id: "assassin-nipper",
+        name: "Assassin Nipper .38 (Legendäre Pistole)",
+        type: "weapon",
+        region: "Permit Keys",
+        chapter: "Ab Kapitel 1",
+        permanent: true,
+        codes: [],
+        desc: "Fahre von Key Lento per Boot Richtung Südwesten an Maroon Key vorbei zur schmalen Permit-Keys-Insel. Am Südstrand liegt ein gestrandetes Holzboot – klettere drauf und öffne die Bodenluke im Deck (Δ / Y)."
+      },
+      {
+        id: "smuggler-gorse",
+        name: "Smuggler Gorse 425 (Legendäre Schrotflinte)",
+        type: "weapon",
+        region: "Permit Keys",
+        chapter: "Ab Kapitel 1",
+        permanent: true,
+        codes: [],
+        desc: "Direkt im Anschluss an die Nipper .38 weiter nach Norden zur nördlichsten Insel der Permit Keys. Folge dem Ufer bis zum gekippten Schmugglerboot im Schilf – die Schrotflinte liegt direkt auf der geneigten Seite am Boden."
+      },
+      {
+        id: "kingfishers-w22",
+        name: "Kingfishers W-22 (Legendäres Gewehr)",
+        type: "weapon",
+        region: "Wetman Bay",
+        chapter: "Ab Kapitel 1",
+        permanent: true,
+        codes: [],
+        desc: "Hochsicherheits-Spot 'Fishing Shacks' auf der mittleren Insel in Wetman Bay (westlich von Pelican Valley). Nimm ein Boot statt zu schwimmen, schalte die Wachen leise aus und hol dir das Gewehr mit Visier & Schalldämpfer aus dem Koffer in der Hütte."
+      },
+      {
+        id: "gutterball-850",
+        name: "Gutterball Moreland 850 (Unique Pumpgun)",
+        type: "weapon",
+        region: "Port Gellhorn",
+        chapter: "Freie Erkundung",
+        permanent: true,
+        codes: [],
+        desc: "Zu finden bei der illegalen Gang-Operation 'Kingpin Bowling' in Port Gellhorn. Einmal eingesammelt, bleibt diese einzigartige Variante dauerhaft in deiner Sammlung."
+      },
+      {
+        id: "couch-potato-357",
+        name: "Couch Potato Mustang .357 (Magnum)",
+        type: "weapon",
+        region: "Port Gellhorn",
+        chapter: "Freie Erkundung",
+        permanent: true,
+        codes: [],
+        desc: "Geheimfund an der Tanglewood Ln in Port Gellhorn: Schieße die im Baum hängende Couch herunter und setz dich kurz darauf, um die einzigartige Mustang .357 Magnum freizuschalten."
+      },
+      {
+        id: "waffenfreak-haus",
+        name: "Waffenfreak-Haus (Raketenwerfer & LMG)",
+        type: "stash",
+        region: "Key Lento",
+        chapter: "Ab Kapitel 1",
+        permanent: false,
+        codes: [],
+        desc: "Eines der stärksten frühen Verstecke in Key Lento: In der Badewanne liegt ein Hauners H-AT Raketenwerfer, und im Schlafzimmer hinter einem Koffer warten ein Goodwin LMG 6 sowie eine Schrotflinte."
+      },
+      {
+        id: "balsero-bunker",
+        name: "Untergrund-Waffenkammer (Conspiracist Type 9)",
+        type: "stash",
+        region: "Balsero",
+        chapter: "Freie Erkundung",
+        permanent: true,
+        codes: [],
+        desc: "Südwestlich der Griffin Shooting Range in Balsero: Suche nach der versteckten Bodenluke unter einem Wohnwagen. Unten findest du Munition, Ausrüstung und die einzigartige Maschinenpistole Conspiracist Type 9."
+      },
+      {
+        id: "corkers-lagerhaus",
+        name: "Los Santos Corkers Lagerhaus",
+        type: "stash",
+        region: "Key Lento",
+        chapter: "Ab Kapitel 1",
+        permanent: false,
+        codes: [],
+        desc: "Großes Lagerhaus in Key Lento (Zugang über den Hinterhof): In der Ecke liegt der Los Santos Corkers Baseballschläger, dazu Brecheisen, Vorschlaghammer und mehrere Werkzeuge."
+      }
+    ];
+
+    const ROUTE_STEPS = [
+      "1. Pelican Valley Außenposten: Strom an → PC (CLEAVES) → Safe (0072) → Tür (0212) für SMG + 11.000 $",
+      "2. Permit Keys Bootstour: Assassin Nipper .38 (Südinsel) & Smuggler Gorse 425 (Nordinsel) einsammeln",
+      "3. Key Lento Waffenfreak-Haus: Hauners H-AT Raketenwerfer & Goodwin LMG 6 abgreifen",
+      "4. Apollo Aggregates Loot-Loop starten & Gewinne sofort auf BuckMe einzahlen"
+    ];
+
+    const GLITCHES = [
+      {
+        id: "apollo-aggregates",
+        title: "Apollo Aggregates Infinite Money Glitch (bis 55k–130k $ / Run)",
+        category: "glitch",
+        tag: "🔥 Top-Glitch",
+        codes: [{ label: "Brian's Lockup: 7700", val: "7700" }],
+        steps: [
+          "Fahre mit deinem persönlichen Fahrzeug (mit Stauraum) zur roten Scheune 'Apollo Aggregates' östlich von Hamlet (South Vice-Dale County).",
+          "Plündere draußen den Van und drinnen Büro-Safe, Kokain und Geldtaschen – fahre die Vans der Scheune NICHT weg.",
+          "Verstaue die Beutetaschen im Kofferraum deines Fahrzeugs (4/4 Slots füllen).",
+          "Respawn auslösen: Entweder ca. 500 Meter (0,32 Meilen) Richtung Kraftwerk wegfahren & zurückkehren ODER manuell speichern und diesen Spielstand sofort laden.",
+          "Wiederhole den Loop, bis der Kofferraum voll ist, und verkaufe alles bei Brian's Lockup (SW Key Lento, Code 7700) oder ab Kapitel 3 bei Tyrone als Hehler (10.800 $ pro voller Tasche)."
+        ]
+      },
+      {
+        id: "store-robbery-reset",
+        title: "Ladenraub-Reset-Glitch (Schnelles Startgeld)",
+        category: "glitch",
+        tag: "⚡ Schnell",
+        codes: [],
+        steps: [
+          "Raube den Burgerladen nahe Jasons Haus in Key Lento, die nahe Tankstelle und die Läden entlang der Strandstraße aus.",
+          "Werde deinen Fahndungslevel los und starte eine beliebige Story-Mission mit Zwischensequenz.",
+          "Öffne während der Sequenz das Pause-Menü → Mission neu starten → danach direkt Mission abbrechen.",
+          "Zurück im Free Roam sind alle überfallenen Läden sofort wieder voll gefüllt."
+        ]
+      },
+      {
+        id: "flamingos-farming",
+        title: "Kokain-Flamingos & Hehler-Farm (Legit & 100%-Fortschritt)",
+        category: "farm",
+        tag: "🦩 100%-Kombi",
+        codes: [],
+        steps: [
+          "Suche rosa Flamingos mit schwarz-weißem Schnabel (125 Stück auf der Karte, 100 für 100% nötig).",
+          "Schieße auf den Körper, um das versteckte Kokain-Päckchen herauszuholen.",
+          "Verkaufe die Päckchen bei Brian's Lockup (7700) oder Tyrone – zählt gleichzeitig für die 100.000 $-Hehler-Anforderung der 100%-Checkliste."
+        ]
+      },
+      {
+        id: "card-pawn",
+        title: "Sammelkarten & Pfandhaus-Route",
+        category: "farm",
+        tag: "🃏 Nebenbei",
+        codes: [],
+        steps: [
+          "Sammle doppelte Sammelkarten in Motels, Tankstellen und Verstecken ein.",
+          "Verkaufe Überschüsse in jedem Pfandhaus für schnelles, sicheres Bargeld ohne Fahndungslevel."
+        ]
+      }
+    ];
+
+    const CHEATS = [
+      { id: "c1", name: "250.000 $ Geld-Cheat", cat: "Spieler", keys: ["U","R","D","L","U","L","D","R"], unlock: "Hauptstory abschließen" },
+      { id: "c2", name: "Unendlicher Fokus", cat: "Spieler", keys: ["D","U","U","D","U","D","U","D","U","R"], unlock: "Alle Meditationen abschließen" },
+      { id: "c3", name: "Maximale Panzerung", cat: "Spieler", keys: ["D","U","L","U","U","U","U","U","D","D"], unlock: "100 Workouts absolvieren" },
+      { id: "c4", name: "Kein Fallschaden", cat: "Spieler", keys: ["D","D","U","U","L","R","L","R"], unlock: "20 Stürze aus 12m Höhe überleben" },
+      { id: "c5", name: "Fahndungslevel senken", cat: "Spieler", keys: ["R","R","L","L","D","U","R","L"], unlock: "Story-Fortschritt" },
+      { id: "c6", name: "Angriffskraft (Mehr Schaden)", cat: "Kampf", keys: ["D","U","L","L","R","D","D","U","D"], unlock: "Kampf-Herausforderungen" },
+      { id: "c7", name: "Maximale Munition", cat: "Kampf", keys: ["D","U","R","D","L","L","U","L"], unlock: "Schießstand Bronze" },
+      { id: "c8", name: "Unendlich Munition", cat: "Kampf", keys: ["D","U","R","D","L","L","U","R"], unlock: "Schießstand Silber" },
+      { id: "c9", name: "Kein Nachladen", cat: "Kampf", keys: ["D","U","R","D","L","L","U","U"], unlock: "Schießstand Gold" },
+      { id: "c10", name: "Alle Explosivwaffen", cat: "Kampf", keys: ["D","U","R","D","L","L","U","D"], unlock: "100 Granaten werfen" },
+      { id: "c11", name: "Brandmunition", cat: "Kampf", keys: ["D","U","L","R","D","U","R","R"], unlock: "100 Gegnern Feuerschaden zufügen" },
+      { id: "c12", name: "Explosive Schrotflinte", cat: "Kampf", keys: ["D","U","L","R","D","D","L","L"], unlock: "100 Gegnern Explosionsschaden zufügen" },
+      { id: "c13", name: "Fahrkraft (Rammen schleudert Ziele weg)", cat: "Fahrzeuge", keys: ["D","U","L","L","R","D","L","U","D"], unlock: "25 Gegner mit Fahrzeug ausschalten" },
+      { id: "c14", name: "Hauners P-996 LAZER (Kampfjet)", cat: "Fahrzeuge", keys: ["L","U","R","D","U","U","R","L"], unlock: "Alle Herausforderungen abschließen" },
+      { id: "c15", name: "Aufblasbarer Flamingo spawnen", cat: "Fahrzeuge", keys: ["L","U","R","D","L","R","D","U"], unlock: "50 Kokain-Flamingos zerstören" },
+      { id: "c16", name: "Airboat 09 spawnen", cat: "Fahrzeuge", keys: ["L","U","R","D","D","L","U","R"], unlock: "5 Survival-Herausforderungen" },
+      { id: "c17", name: "Wetter wechseln", cat: "Umwelt & Filter", keys: ["D","R","U","D","R","U","R"], unlock: "Gesamte Karte enthüllen" },
+      { id: "c18", name: "Tageszeit vorspulen", cat: "Umwelt & Filter", keys: ["D","R","U","D","R","L","U"], unlock: "10 sammelbare Uhren finden" },
+      { id: "c19", name: "Pixel-Art Bildschirmfilter", cat: "Umwelt & Filter", keys: ["U","L","D","R","U","L","D","L"], unlock: "250.000 $ durch Sammelobjekte verdienen" }
+    ];
+
+    const COLLECTIBLES = [
+      { id: "flamingos", label: "🦩 Kokain-Flamingos", goal: 100, max: 125 },
+      { id: "waink", label: "📱 WAiNK-Scans", goal: 100, max: 100 },
+      { id: "cards", label: "🃏 Sammelkarten-Sets", goal: 15, max: 18 },
+      { id: "watches", label: "⌚ Luxus-Uhren & Meditation", goal: 20, max: 34 }
+    ];
+
+    const STORAGE_KEY = "leonida_vault_state_v2";
+    const defaultState = {
+      found: {},
+      favs: {},
+      route: {},
+      collectibles: { flamingos: 0, waink: 0, cards: 0, watches: 0 },
+      notes: [],
+      platform: "ps5"
+    };
+
+    let state = loadState();
+    let itemFilter = "all";
+    let glitchFilter = "all";
+    let cheatFilter = "Alle";
+    let searchQuery = "";
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return structuredClone(defaultState);
+        const parsed = JSON.parse(raw);
+        return {
+          ...structuredClone(defaultState),
+          ...parsed,
+          collectibles: { ...defaultState.collectibles, ...(parsed.collectibles || {}) }
+        };
+      } catch {
+        return structuredClone(defaultState);
+      }
+    }
+
+    function saveState() {
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
+    }
+
+    function showToast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg;
+      t.classList.add("show");
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => t.classList.remove("show"), 2000);
+    }
+
+    function copyText(val) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(val).then(() => showToast("Kopiert: " + val)).catch(() => fallbackCopy(val));
+      } else {
+        fallbackCopy(val);
+      }
+    }
+
+    function fallbackCopy(val) {
+      const ta = document.createElement("textarea");
+      ta.value = val;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand("copy"); showToast("Kopiert: " + val); } catch { showToast("Code: " + val); }
+      document.body.removeChild(ta);
+    }
+
+    function matchesSearch(text) {
+      if (!searchQuery) return true;
+      return text.toLowerCase().includes(searchQuery.toLowerCase());
+    }
+
+    // ITEMS RENDER
+    function renderItems() {
+      const total = ITEMS.length;
+      const foundCount = ITEMS.filter(i => state.found[i.id]).length;
+      const weaponCount = ITEMS.filter(i => i.type === "weapon").length;
+      const stashCount = ITEMS.filter(i => i.type === "stash").length;
+      const notFoundCount = total - foundCount;
+      const favCount = ITEMS.filter(i => state.favs[i.id]).length;
+
+      document.getElementById("itemsProgressText").textContent = `${foundCount} / ${total} gefunden`;
+      document.getElementById("itemsProgressBar").style.width = `${Math.round((foundCount / total) * 100)}%`;
+
+      const filters = [
+        { id: "all", label: `Alle (${total})` },
+        { id: "weapon", label: `🔫 Waffen (${weaponCount})` },
+        { id: "stash", label: `🗝️ Verstecke (${stashCount})` },
+        { id: "notfound", label: `Nicht gefunden (${notFoundCount})` },
+        { id: "found", label: `Gefunden (${foundCount})` },
+        { id: "fav", label: `⭐ Favoriten (${favCount})` }
+      ];
+
+      const fWrap = document.getElementById("itemFilters");
+      fWrap.innerHTML = filters.map(f =>
+        `<button class="chip ${itemFilter === f.id ? "active" : ""}" data-filter="${f.id}">${f.label}</button>`
+      ).join("");
+
+      fWrap.querySelectorAll(".chip").forEach(btn => {
+        btn.addEventListener("click", () => {
+          itemFilter = btn.dataset.filter;
+          renderItems();
+        });
+      });
+
+      const filtered = ITEMS.filter(item => {
+        if (itemFilter === "weapon" && item.type !== "weapon") return false;
+        if (itemFilter === "stash" && item.type !== "stash") return false;
+        if (itemFilter === "found" && !state.found[item.id]) return false;
+        if (itemFilter === "notfound" && state.found[item.id]) return false;
+        if (itemFilter === "fav" && !state.favs[item.id]) return false;
+        const hay = `${item.name} ${item.region} ${item.desc} ${item.codes.map(c => c.val).join(" ")}`;
+        return matchesSearch(hay);
+      });
+
+      const activeLabel = filters.find(f => f.id === itemFilter)?.label || "Alle";
+      document.getElementById("itemStatus").innerHTML =
+        `<span>Filter: <strong>${activeLabel}</strong></span><span>${filtered.length} Einträge</span>`;
+
+      const list = document.getElementById("itemsList");
+      if (!filtered.length) {
+        list.innerHTML = `<div class="empty-state">Keine Einträge für diesen Filter gefunden.</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(item => {
+        const isFound = !!state.found[item.id];
+        const isFav = !!state.favs[item.id];
+        const typeBadge = item.type === "weapon"
+          ? `<span class="badge weapon">🔫 Waffe</span>`
+          : `<span class="badge stash">🗝️ Versteck</span>`;
+        const codesHtml = item.codes.length
+          ? `<div class="code-row">${item.codes.map(c => `<button class="code-btn" data-copy="${c.val}">📋 ${c.label}</button>`).join("")}</div>`
+          : "";
+        return `
+          <article class="card ${isFound ? "found" : ""}">
+            <div class="card-top">
+              <h3 class="card-title">${item.name}</h3>
+            </div>
+            <div class="badges">
+              ${typeBadge}
+              <span class="badge region">📍 ${item.region}</span>
+              <span class="badge">${item.chapter}</span>
+              ${item.permanent ? `<span class="badge perm">✓ Permanent</span>` : ""}
+            </div>
+            <p>${item.desc}</p>
+            ${codesHtml}
+            <div class="card-actions">
+              <button class="btn btn-found ${isFound ? "is-found" : ""}" data-toggle-found="${item.id}">
+                ${isFound ? "✅ Gefunden" : "⬜ Als gefunden markieren"}
+              </button>
+              <button class="btn btn-fav ${isFav ? "is-fav" : ""}" data-toggle-fav="${item.id}">
+                ${isFav ? "⭐ Favorit" : "☆ Merken"}
+              </button>
+            </div>
+          </article>
+        `;
+      }).join("");
+
+      list.querySelectorAll("[data-toggle-found]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.toggleFound;
+          state.found[id] = !state.found[id];
+          saveState();
+          renderItems();
+        });
+      });
+
+      list.querySelectorAll("[data-toggle-fav]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.toggleFav;
+          state.favs[id] = !state.favs[id];
+          saveState();
+          renderItems();
+        });
+      });
+
+      bindCopyButtons(list);
+    }
+
+    // GLITCHES RENDER
+    function renderGlitches() {
+      const routeWrap = document.getElementById("routeChecklist");
+      routeWrap.innerHTML = ROUTE_STEPS.map((text, idx) => {
+        const checked = !!state.route[idx];
+        return `
+          <label class="checklist-item ${checked ? "done" : ""}">
+            <input type="checkbox" data-route="${idx}" ${checked ? "checked" : ""} />
+            <span>${text}</span>
+          </label>
+        `;
+      }).join("");
+
+      routeWrap.querySelectorAll("[data-route]").forEach(cb => {
+        cb.addEventListener("change", () => {
+          state.route[cb.dataset.route] = cb.checked;
+          saveState();
+          renderGlitches();
+        });
+      });
+
+      const glitchCnt = GLITCHES.filter(g => g.category === "glitch").length;
+      const farmCnt = GLITCHES.filter(g => g.category === "farm").length;
+      const filters = [
+        { id: "all", label: `Alle (${GLITCHES.length})` },
+        { id: "glitch", label: `⚡ Glitches (${glitchCnt})` },
+        { id: "farm", label: `💰 Farm-Methoden (${farmCnt})` }
+      ];
+
+      const fWrap = document.getElementById("glitchFilters");
+      fWrap.innerHTML = filters.map(f =>
+        `<button class="chip ${glitchFilter === f.id ? "active" : ""}" data-gfilter="${f.id}">${f.label}</button>`
+      ).join("");
+
+      fWrap.querySelectorAll(".chip").forEach(btn => {
+        btn.addEventListener("click", () => {
+          glitchFilter = btn.dataset.gfilter;
+          renderGlitches();
+        });
+      });
+
+      const filtered = GLITCHES.filter(g => {
+        if (glitchFilter !== "all" && g.category !== glitchFilter) return false;
+        const hay = `${g.title} ${g.steps.join(" ")} ${g.codes.map(c => c.val).join(" ")}`;
+        return matchesSearch(hay);
+      });
+
+      document.getElementById("glitchStatus").innerHTML =
+        `<span>Filter: <strong>${filters.find(f => f.id === glitchFilter)?.label}</strong></span><span>${filtered.length} Guides</span>`;
+
+      const list = document.getElementById("glitchesList");
+      if (!filtered.length) {
+        list.innerHTML = `<div class="empty-state">Kein Glitch oder Money-Guide passt zu deiner Suche.</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(g => {
+        const codesHtml = g.codes.length
+          ? `<div class="code-row">${g.codes.map(c => `<button class="code-btn" data-copy="${c.val}">📋 ${c.label}</button>`).join("")}</div>`
+          : "";
+        return `
+          <article class="card">
+            <h3 class="card-title">${g.title}</h3>
+            <div class="badges"><span class="badge glitch">${g.tag}</span></div>
+            ${codesHtml}
+            <ol class="steps">${g.steps.map(s => `<li>${s}</li>`).join("")}</ol>
+          </article>
+        `;
+      }).join("");
+
+      bindCopyButtons(list);
+    }
+
+    // CHEATS RENDER
+    function renderCheats() {
+      const isPs5 = state.platform === "ps5";
+      document.getElementById("btnPs5").classList.toggle("active", isPs5);
+      document.getElementById("btnXbox").classList.toggle("active", !isPs5);
+      document.getElementById("cheatTriggerHint").textContent = isPs5 ? "L1 halten + R1 drücken" : "LB halten + RB drücken";
+
+      const cats = ["Alle", "Spieler", "Kampf", "Fahrzeuge", "Umwelt & Filter"];
+      const fWrap = document.getElementById("cheatFilters");
+      fWrap.innerHTML = cats.map(c => {
+        const cnt = c === "Alle" ? CHEATS.length : CHEATS.filter(x => x.cat === c).length;
+        return `<button class="chip ${cheatFilter === c ? "active" : ""}" data-cfilter="${c}">${c} (${cnt})</button>`;
+      }).join("");
+
+      fWrap.querySelectorAll(".chip").forEach(btn => {
+        btn.addEventListener("click", () => {
+          cheatFilter = btn.dataset.cfilter;
+          renderCheats();
+        });
+      });
+
+      const filtered = CHEATS.filter(c => {
+        if (cheatFilter !== "Alle" && c.cat !== cheatFilter) return false;
+        return matchesSearch(`${c.name} ${c.cat} ${c.unlock}`);
+      });
+
+      document.getElementById("cheatStatus").innerHTML =
+        `<span>Kategorie: <strong>${cheatFilter}</strong></span><span>${filtered.length} Cheats</span>`;
+
+      const arrowMap = {
+        U: { sym: "▲", cls: "up" },
+        D: { sym: "▼", cls: "down" },
+        L: { sym: "◄", cls: "left" },
+        R: { sym: "►", cls: "right" }
+      };
+
+      const trigHtml = isPs5
+        ? `<span class="keycap trigger">L1 + R1</span>`
+        : `<span class="keycap trigger">LB + RB</span>`;
+
+      const list = document.getElementById("cheatsList");
+      if (!filtered.length) {
+        list.innerHTML = `<div class="empty-state">Kein Cheat gefunden.</div>`;
+        return;
+      }
+
+      list.innerHTML = filtered.map(c => `
+        <article class="card">
+          <div class="card-top">
+            <h3 class="card-title">${c.name}</h3>
+            <span class="badge region">${c.cat}</span>
+          </div>
+          <div class="keycaps">
+            ${trigHtml}
+            ${c.keys.map(k => `<span class="keycap ${arrowMap[k].cls}">${arrowMap[k].sym}</span>`).join("")}
+          </div>
+          <p style="margin-bottom:0;font-size:12px;color:var(--muted);">🔓 Freischaltung: ${c.unlock}</p>
+        </article>
+      `).join("");
+    }
+
+    // TOOLS & NOTES RENDER
+    function renderTools() {
+      const box = document.getElementById("collectiblesBox");
+      box.innerHTML = COLLECTIBLES.map(c => {
+        const val = state.collectibles[c.id] || 0;
+        const pct = Math.min(100, Math.round((val / c.goal) * 100));
+        return `
+          <div class="counter-row">
+            <div style="flex:1">
+              <div style="font-size:13.5px;font-weight:700;margin-bottom:4px;">${c.label}</div>
+              <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+            </div>
+            <div class="counter-controls">
+              <button class="c-btn" data-cid="${c.id}" data-delta="-1">−</button>
+              <span class="c-val">${val} / ${c.goal}</span>
+              <button class="c-btn" data-cid="${c.id}" data-delta="1">+</button>
+            </div>
+          </div>
+        `;
+      }).join("");
+
+      box.querySelectorAll(".c-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.cid;
+          const delta = parseInt(btn.dataset.delta, 10);
+          const meta = COLLECTIBLES.find(x => x.id === id);
+          const next = Math.max(0, Math.min(meta.max, (state.collectibles[id] || 0) + delta));
+          state.collectibles[id] = next;
+          saveState();
+          renderTools();
+        });
+      });
+
+      const nList = document.getElementById("notesList");
+      if (!state.notes.length) {
+        nList.innerHTML = `<p style="margin-top:10px;font-size:12.5px;color:var(--muted);">Noch keine eigenen Notizen gespeichert.</p>`;
+      } else {
+        nList.innerHTML = state.notes.map((n, idx) => `
+          <div class="note-item">
+            <span style="white-space:pre-wrap;word-break:break-word;">${escapeHtml(n)}</span>
+            <button class="c-btn" style="width:28px;height:28px;font-size:13px;" data-del-note="${idx}" aria-label="Löschen">🗑️</button>
+          </div>
+        `).join("");
+
+        nList.querySelectorAll("[data-del-note]").forEach(btn => {
+          btn.addEventListener("click", () => {
+            state.notes.splice(parseInt(btn.dataset.delNote, 10), 1);
+            saveState();
+            renderTools();
+          });
+        });
+      }
+    }
+
+    function escapeHtml(str) {
+      return str.replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+    }
+
+    function bindCopyButtons(root = document) {
+      root.querySelectorAll("[data-copy]").forEach(btn => {
+        btn.onclick = () => copyText(btn.dataset.copy);
+      });
+    }
+
+    // NAVIGATION
+    document.querySelectorAll(".nav-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-section").forEach(s => s.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    });
+
+    // PLATFORM SWITCH
+    document.getElementById("btnPs5").addEventListener("click", () => {
+      state.platform = "ps5";
+      saveState();
+      renderCheats();
+    });
+    document.getElementById("btnXbox").addEventListener("click", () => {
+      state.platform = "xbox";
+      saveState();
+      renderCheats();
+    });
+
+    // NOTES
+    document.getElementById("saveNoteBtn").addEventListener("click", () => {
+      const inp = document.getElementById("noteInput");
+      const val = inp.value.trim();
+      if (!val) return showToast("Bitte erst etwas eingeben!");
+      state.notes.unshift(val);
+      inp.value = "";
+      saveState();
+      renderTools();
+      showToast("Notiz gespeichert!");
+    });
+
+    document.getElementById("exportNotesBtn").addEventListener("click", () => {
+      if (!state.notes.length) return showToast("Keine Notizen zum Kopieren.");
+      copyText(state.notes.join("\n---\n"));
+    });
+
+    // SEARCH
+    const searchInput = document.getElementById("globalSearch");
+    const clearBtn = document.getElementById("clearSearch");
+    searchInput.addEventListener("input", () => {
+      searchQuery = searchInput.value.trim();
+      clearBtn.style.display = searchQuery ? "block" : "none";
+      renderItems();
+      renderGlitches();
+      renderCheats();
+    });
+    clearBtn.addEventListener("click", () => {
+      searchInput.value = "";
+      searchQuery = "";
+      clearBtn.style.display = "none";
+      renderItems();
+      renderGlitches();
+      renderCheats();
+    });
+
+    // INIT
+    bindCopyButtons(document);
+    renderItems();
+    renderGlitches();
+    renderCheats();
+    renderTools();
+  </script>
+</body>
+</html>
