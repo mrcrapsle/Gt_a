@@ -1124,6 +1124,15 @@
       { id: "watches", label: "⌚ Luxus-Uhren & Meditation", goal: 20, max: 34 }
     ];
 
+    // Kartenlinks: Key Lento hat eine Fan-Karte, sonst die GTABase-Karte.
+    const MAP_LINKS = {
+      "Key Lento": "https://meowdb.com/gta6/map/key-lento",
+      default: "https://www.gtabase.com/de/gta-6/karte/"
+    };
+    function mapUrlFor(region) {
+      return MAP_LINKS[region] || MAP_LINKS.default;
+    }
+
     const STORAGE_KEY = "leonida_vault_state_v2";
     const defaultState = {
       found: {},
@@ -1348,6 +1357,7 @@
               <button class="btn btn-fav ${isFav ? "is-fav" : ""}" data-toggle-fav="${item.id}">
                 ${isFav ? "⭐ Favorit" : "☆ Merken"}
               </button>
+              <a class="btn btn-cyan" target="_blank" rel="noopener" href="${mapUrlFor(item.region)}">🗺️ Karte${item.region ? ": " + esc(item.region) : ""}</a>
               ${item.custom ? `<button class="btn btn-danger" data-del-item="${escapeHtml(item.id)}">🗑️ Löschen</button>` : ""}
             </div>
           </article>
