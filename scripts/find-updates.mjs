@@ -14,12 +14,29 @@ const OUT = "data/updates.json";
 // Konkrete Angaben: Geldbetrag oder benannter Gegenstand/Ort aus dem Spiel.
 const MONEY = /\$\s?\d[\d.,]*|\d[\d.,]*\s?\$/;
 const ITEM_TERMS = /\b(safe|vent|duffel|cash register|cocaine|collectible|card|crash site|treasure|weapon|shotgun|smg|rifle|pistol|launcher|lmg|glitch|code|cheat)\b/i;
-const WEAPON_TERMS = /\b(hobo shotgun|marabunta|kingfisher|hunter'?s laird|gutterball|couch potato|crabshack|nipper|gorse|goodwin|hauners)\b/i;
+const WEAPON_TERMS = /\b(hobo shotgun|marabunta grande|kingfisher|hunter'?s laird|gutterball|couch potato|crabshack|nipper|gorse|goodwin|hauners|smg|kalinga|duke 556)\b/i;
+// Angaben, die bei uns schon stehen (Waffe oder Ort). Treffer dazu werden nicht übernommen.
+// Stand: Einträge in index.html. Bei neuen Einträgen hier ergänzen.
+const KNOWN_TERMS = [
+  /hobo shotgun|marabunta grande/i,      // hobo-shotgun-hamlet
+  /apollo aggregates/i,                  // Lagerhaus South Vice-Dale = Apollo Aggregates
+  /south of hamlet|three miles from jason/i, // Übersichtssatz desselben Lagerhauses (Richtung unklar: App sagt „östlich“)
+  /type 9|conspiracist/i,                // balsero-bunker
+  /kingfisher|w-?22/i,                   // kingfishers-w22
+  /crabshack|vf5/i,
+  /nipper/i, /gorse/i, /gutterball/i, /couch potato|mustang .357/i,
+  /waffenfreak|raketenwerfer|hauners h-at/i,
+  /corkers/i,
+  /exotic animals/i                      // Glitch-Guide in index.html
+];
+// Ich-Form und Nutzerkommentare: keine Fundort-Angaben, sondern Meinungen.
+const FIRST_PERSON = /\b(ich|mein|meine|meinen|mir|mich)\b|\bI\b|\bmy\b|\bme\b|\bwe\b/i;
 // Typische Nicht-Hinweise: Überschriften, Anleitungen, Werbung, Nutzerkommentare.
 const REJECT = [
   /@/,                                   // Nutzerkommentar
   /^tips? to /i, /making money is only/i,  // Überschriften
   /^use an atm/i,                        // allgemeiner Tipp ohne Fundort
+  /plenty of opportunities|some gta 6 locations for money|make extra money\.?$/i, // Einleitungen
   /\b(cookie|newsletter|subscribe|sign up|advertis|share this|read more|click here)\b/i,
   /\b(interaktive karte|map: |unsere karte|komplettierer)\b/i,   // Werbetexte der Karte
   /\b(persönlich|mybase|seitenleiste)\b/i
@@ -57,9 +74,14 @@ function extract(html) {
 }
 
 // Prüft, ob ein Satz ein konkreter, nutzbarer Hinweis ist.
-export function isUsefulHint(text) {
+export function isUsefulHint(text, context = "") {
   if (text.length < 40 || text.length > 300) return false;
   if (REJECT.some(r => r.test(text))) return false;
+  if (FIRST_PERSON.test(text)) return false;
+  // Doppelt zu einem Eintrag in der App? Die Überschrift zählt nur bei Exotic Animals.
+  const useContext = /exotic animals/i.test(context);
+  const haystack = useContext ? `${text} ${context}` : text;
+  if (KNOWN_TERMS.some(k => k.test(haystack))) return false;
   const concrete = MONEY.test(text) || WEAPON_TERMS.test(text) || ITEM_TERMS.test(text);
   return concrete;
 }
@@ -87,7 +109,7 @@ async function collect(source, existingText) {
   const seen = new Set();
   const candidates = [];
   for (const { text, heading } of extract(await res.text())) {
-    if (!isUsefulHint(text)) continue;
+    if (!isUsefulHint(text, heading)) continue;
     const n = norm(text);
     if (seen.has(n.slice(0, 60)) || existingText.includes(n.slice(0, 60))) continue;
     seen.add(n.slice(0, 60));
