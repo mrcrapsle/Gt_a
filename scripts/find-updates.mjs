@@ -1,4 +1,4 @@
-// Sucht auf festen Quellseiten nach neuen Hinweisen für Leonida Vault.
+// Sucht auf festen Quellseiten nach konkreten Hinweisen für Leonida Vault.
 // Ergebnis: data/updates.json mit Kandidaten, die ein Mensch vor dem Übernehmen prüft.
 // Läuft per GitHub Action (siehe .github/workflows/update-finder.yml).
 import { readFile, writeFile } from "node:fs/promises";
@@ -8,28 +8,69 @@ const SOURCES = [
   { name: "GTABase (DE, Karte)", url: "https://www.gtabase.com/de/gta-6/karte/" },
   { name: "Beebom (Geld-Spots)", url: "https://beebom.com/gta-6-best-money-spots/" }
 ];
-const KEYWORDS = ["fundort", "versteck", "lagerhaus", "waffe", "glitch", "cheat", "geld", "$", "safe", "schatz", "gold"];
 const MAX_PER_SOURCE = 15;
 const OUT = "data/updates.json";
 
+// Konkrete Angaben: Geldbetrag oder benannter Gegenstand/Ort aus dem Spiel.
+const MONEY = /\$\s?\d[\d.,]*|\d[\d.,]*\s?\$/;
+const ITEM_TERMS = /\b(safe|vent|duffel|cash register|cocaine|collectible|card|crash site|treasure|weapon|shotgun|smg|rifle|pistol|launcher|lmg|glitch|code|cheat)\b/i;
+const WEAPON_TERMS = /\b(hobo shotgun|marabunta|kingfisher|hunter'?s laird|gutterball|couch potato|crabshack|nipper|gorse|goodwin|hauners)\b/i;
+// Typische Nicht-Hinweise: Überschriften, Anleitungen, Werbung, Nutzerkommentare.
+const REJECT = [
+  /@/,                                   // Nutzerkommentar
+  /^tips? to /i, /making money is only/i,  // Überschriften
+  /^use an atm/i,                        // allgemeiner Tipp ohne Fundort
+  /\b(cookie|newsletter|subscribe|sign up|advertis|share this|read more|click here)\b/i,
+  /\b(interaktive karte|map: |unsere karte|komplettierer)\b/i,   // Werbetexte der Karte
+  /\b(persönlich|mybase|seitenleiste)\b/i
+];
+
 const norm = s => s.toLowerCase().replace(/\s+/g, " ").trim();
 
-function htmlToSentences(html) {
-  const text = html
-    .replace(/<(script|style|noscript)[\s\S]*?<\/\1>/gi, " ")
+// Entfernt Navigation, Kommentare, Werbung und Skripte, bevor Text extrahiert wird.
+function stripBoilerplate(html) {
+  return html
+    .replace(/<(script|style|noscript|svg|iframe|form|nav|header|footer|aside)\b[\s\S]*?<\/\1>/gi, " ")
+    .replace(/<[^>]+(class|id)="[^"]*(comment|sidebar|menu|cookie|share|newsletter|related|promo|ad-)[^"]*"[^>]*>[\s\S]*?<\/(div|section|ul|aside)>/gi, " ");
+}
+
+// Liefert Sätze mit der zuletzt gesehenen Überschrift als Kontext.
+function extract(html) {
+  const cleaned = stripBoilerplate(html)
+    .replace(/<(h[1-4])\b[^>]*>([\s\S]*?)<\/\1>/gi, (_, _t, inner) => `\n@@H ${inner.replace(/<[^>]+>/g, " ")}\n`)
+    .replace(/<\/(p|li|div|br|tr)>|<br\s*\/?>/gi, "\n")
     .replace(/<[^>]+>/g, " ")
-    .replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&#39;|&#x27;/g, "'").replace(/&quot;/g, '"');
-  return text.split(/(?<=[.!?])\s+|\n+/).map(x => x.replace(/\s+/g, " ").trim());
+    .replace(/&nbsp;/g, " ").replace(/&rsquo;|&#8217;/g, "’").replace(/&amp;/g, "&")
+    .replace(/&#39;|&#x27;/g, "'").replace(/&quot;/g, '"');
+  const out = [];
+  let heading = "";
+  for (const line of cleaned.split("\n")) {
+    const t = line.replace(/\s+/g, " ").trim();
+    if (!t) continue;
+    if (t.startsWith("@@H ")) { heading = t.slice(4).trim(); continue; }
+    for (const s of t.split(/(?<=[.!?])\s+/)) {
+      const sent = s.trim();
+      if (sent) out.push({ text: sent, heading });
+    }
+  }
+  return out;
+}
+
+// Prüft, ob ein Satz ein konkreter, nutzbarer Hinweis ist.
+export function isUsefulHint(text) {
+  if (text.length < 40 || text.length > 300) return false;
+  if (REJECT.some(r => r.test(text))) return false;
+  const concrete = MONEY.test(text) || WEAPON_TERMS.test(text) || ITEM_TERMS.test(text);
+  return concrete;
 }
 
 async function robotsAllows(url) {
   try {
     const u = new URL(url);
     const res = await fetch(`${u.origin}/robots.txt`, { headers: { "User-Agent": USER_AGENT } });
-    if (!res.ok) return true; // kein robots.txt → erlaubt
-    const lines = (await res.text()).split("\n").map(l => l.trim());
+    if (!res.ok) return true;
     let applies = false;
-    for (const l of lines) {
+    for (const l of (await res.text()).split("\n").map(x => x.trim())) {
       const [k, ...rest] = l.split(":");
       const v = rest.join(":").trim();
       if (/^user-agent$/i.test(k)) applies = v === "*" || /leonida/i.test(v);
@@ -40,27 +81,23 @@ async function robotsAllows(url) {
 }
 
 async function collect(source, existingText) {
-  if (!(await robotsAllows(source.url))) {
-    return { source, error: "robots.txt verbietet den Abruf", candidates: [] };
-  }
+  if (!(await robotsAllows(source.url))) return { source, error: "robots.txt verbietet den Abruf", candidates: [] };
   const res = await fetch(source.url, { headers: { "User-Agent": USER_AGENT } });
   if (!res.ok) return { source, error: `HTTP ${res.status}`, candidates: [] };
-  const sentences = htmlToSentences(await res.text());
   const seen = new Set();
   const candidates = [];
-  for (const s of sentences) {
-    if (s.length < 40 || s.length > 300) continue;
-    const n = norm(s);
-    if (!KEYWORDS.some(k => n.includes(k))) continue;
-    if (seen.has(n.slice(0, 60))) continue;
+  for (const { text, heading } of extract(await res.text())) {
+    if (!isUsefulHint(text)) continue;
+    const n = norm(text);
+    if (seen.has(n.slice(0, 60)) || existingText.includes(n.slice(0, 60))) continue;
     seen.add(n.slice(0, 60));
-    // Doppelt, wenn der Anfang schon in der App steht.
-    if (existingText.includes(n.slice(0, 60))) continue;
     candidates.push({
       id: "cand-" + Buffer.from(n.slice(0, 40)).toString("base64url").slice(0, 16),
-      text: s,
+      text,
+      context: heading || null,
       source: source.name,
       sourceUrl: source.url,
+      language: "en",
       status: "ungeprüft"
     });
     if (candidates.length >= MAX_PER_SOURCE) break;
@@ -69,8 +106,7 @@ async function collect(source, existingText) {
 }
 
 async function main() {
-  const html = await readFile("index.html", "utf8");
-  const existingText = norm(html);
+  const existingText = norm(await readFile("index.html", "utf8"));
   const results = [];
   for (const src of SOURCES) {
     try { results.push(await collect(src, existingText)); }
@@ -79,7 +115,7 @@ async function main() {
   const candidates = results.flatMap(r => r.candidates);
   const out = {
     generatedAt: new Date().toISOString(),
-    note: "Automatisch gesammelt. Nichts davon ist im Spiel bestätigt.",
+    note: "Automatisch gesammelt. Nichts davon ist im Spiel bestätigt. Quellen sind größtenteils Englisch.",
     sources: results.map(r => ({ name: r.source.name, url: r.source.url, error: r.error, found: r.candidates.length })),
     candidates
   };
