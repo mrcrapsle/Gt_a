@@ -854,6 +854,7 @@
           </div>
         </details>
         <p id="backupInfo" class="muted-small"></p>
+        <p id="backupReminder" class="muted-small"></p>
         <div class="card-actions" style="margin-top:10px;">
           <button id="resetBtn" class="btn btn-danger" type="button">🗑️ Alles zurücksetzen</button>
         </div>
@@ -1086,7 +1087,9 @@
       platform: "ps5",
       cheatsTried: {},
       cheatFavs: {},
-      customItems: []
+      customItems: [],
+      glitchDone: {},
+      lastBackupAt: null
     };
     const BACKUP_APP_ID = "leonida-vault";
 
@@ -1138,7 +1141,9 @@
         platform: parsed.platform === "xbox" ? "xbox" : "ps5",
         cheatsTried: boolMap(parsed.cheatsTried),
         cheatFavs: boolMap(parsed.cheatFavs),
-        customItems
+        glitchDone: boolMap(parsed.glitchDone),
+        customItems,
+        lastBackupAt: typeof parsed.lastBackupAt === "string" && !isNaN(Date.parse(parsed.lastBackupAt)) ? parsed.lastBackupAt : null
       };
     }
 
@@ -1360,10 +1365,13 @@
 
       const glitchCnt = GLITCHES.filter(g => g.category === "glitch").length;
       const farmCnt = GLITCHES.filter(g => g.category === "farm").length;
+      const doneCnt = GLITCHES.filter(g => state.glitchDone[g.id]).length;
       const filters = [
         { id: "all", label: `Alle (${GLITCHES.length})` },
         { id: "glitch", label: `⚡ Glitches (${glitchCnt})` },
-        { id: "farm", label: `💰 Farm-Methoden (${farmCnt})` }
+        { id: "farm", label: `💰 Farm-Methoden (${farmCnt})` },
+        { id: "open", label: `⬜ Offen (${GLITCHES.length - doneCnt})` },
+        { id: "done", label: `✅ Erledigt (${doneCnt})` }
       ];
 
       const fWrap = document.getElementById("glitchFilters");
@@ -1379,7 +1387,9 @@
       });
 
       const filtered = GLITCHES.filter(g => {
-        if (glitchFilter !== "all" && g.category !== glitchFilter) return false;
+        if (glitchFilter === "glitch" || glitchFilter === "farm") { if (g.category !== glitchFilter) return false; }
+        if (glitchFilter === "open" && state.glitchDone[g.id]) return false;
+        if (glitchFilter === "done" && !state.glitchDone[g.id]) return false;
         return glitchMatches(g);
       });
 
@@ -1394,19 +1404,34 @@
       }
 
       list.innerHTML = filtered.map(g => {
+        const done = !!state.glitchDone[g.id];
         const codesHtml = g.codes.length
           ? `<div class="code-row">${g.codes.map(c => `<button class="code-btn" data-copy="${c.val}">📋 ${c.label}</button>`).join("")}</div>`
           : "";
         return `
-          <article class="card">
+          <article class="card ${done ? "tried" : ""}">
             <h3 class="card-title">${g.title}</h3>
-            <div class="badges"><span class="badge glitch">${g.tag}</span></div>
+            <div class="badges"><span class="badge glitch">${g.tag}</span>${done ? `<span class="badge tried">✅ Erledigt</span>` : ""}</div>
             ${codesHtml}
             <ol class="steps">${g.steps.map(s => `<li>${s}</li>`).join("")}</ol>
+            <div class="card-actions">
+              <button class="btn btn-found ${done ? "is-found" : ""}" data-toggle-glitch="${g.id}">
+                ${done ? "✅ Erledigt" : "⬜ Als erledigt markieren"}
+              </button>
+            </div>
           </article>
         `;
       }).join("");
 
+      list.querySelectorAll("[data-toggle-glitch]").forEach(btn => {
+        btn.addEventListener("click", () => {
+          const id = btn.dataset.toggleGlitch;
+          if (state.glitchDone[id]) delete state.glitchDone[id]; else state.glitchDone[id] = true;
+          saveState();
+          renderGlitches();
+          updateSearchSummary();
+        });
+      });
       bindCopyButtons(list);
     }
 
@@ -1726,11 +1751,18 @@
     });
 
     // SICHERUNG (EXPORT / IMPORT / RESET)
+    function markBackup() {
+      state.lastBackupAt = new Date().toISOString();
+      saveState();
+      updateBackupInfo();
+    }
     function buildBackup() {
-      return { app: BACKUP_APP_ID, version: 1, exportedAt: new Date().toISOString(), state };
+      const now = new Date().toISOString();
+      return { app: BACKUP_APP_ID, version: 1, exportedAt: now, state: { ...state, lastBackupAt: now } };
     }
     function encodeBackup() {
       const json = JSON.stringify(buildBackup());
+      markBackup();
       return btoa(String.fromCharCode(...new TextEncoder().encode(json)));
     }
     function parseBackup(text) {
@@ -1769,11 +1801,24 @@
         `${state.notes.length} Notizen`
       ];
       if (state.customItems.length) parts.push(`${state.customItems.length} eigene Fundorte`);
-      document.getElementById("backupInfo").textContent = "Aktuell: " + parts.join(" · ");
+      const dataCount = Object.keys(state.found).length + Object.keys(state.cheatsTried).length + Object.keys(state.glitchDone).length + state.notes.length + state.customItems.length;
+      const info = document.getElementById("backupInfo");
+      info.textContent = "Aktuell: " + parts.join(" · ");
+      const box = document.getElementById("backupReminder");
+      if (!state.lastBackupAt) {
+        box.textContent = dataCount ? "⚠️ Du hast Fortschritt, aber noch nie eine Sicherung angelegt." : "";
+      } else {
+        const days = Math.floor((Date.now() - Date.parse(state.lastBackupAt)) / 86400000);
+        const when = days < 1 ? "heute" : days === 1 ? "gestern" : `vor ${days} Tagen`;
+        box.textContent = `Zuletzt gesichert: ${when}` + (days >= 7 && dataCount ? " – bitte bald erneut sichern." : "");
+      }
+      box.style.color = (!state.lastBackupAt && dataCount) || (state.lastBackupAt && (Date.now() - Date.parse(state.lastBackupAt)) > 7 * 86400000 && dataCount) ? "var(--orange)" : "var(--muted)";
     }
 
     document.getElementById("exportFileBtn").addEventListener("click", () => {
-      const blob = new Blob([JSON.stringify(buildBackup(), null, 2)], { type: "application/json" });
+      const backup = buildBackup();
+      markBackup();
+      const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
