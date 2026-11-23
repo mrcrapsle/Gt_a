@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T14:36:21.501Z",
+  "generatedAt": "2026-11-23T19:43:28.037Z",
   "note": "Automatisch gesammelt. Nichts davon ist im Spiel bestätigt. Quellen sind größtenteils Englisch.",
   "sources": [
     {
@@ -125,9 +125,9 @@
       "status": "ungeprüft"
     },
     {
-      "id": "cand-dHJhdmVsIHRvIHRo",
-      "text": "Travel to the marked locations, dive underwater, and use your scanner to reveal nearby treasure.",
-      "context": "Shipwreck Treasure Hunts",
+      "id": "cand-Y2hlY2sgeW91ciB2",
+      "text": "Check your vehicle trunk : Your duffel bag can return to your personal vehicle’s trunk after certain encounters.",
+      "context": "Tips to Keep Your Money Safe in GTA 6",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
       "language": "en",
@@ -135,17 +135,17 @@
     },
     {
       "id": "cand-aXQgY29udGFpbnMg",
-      "text": "It contains a unique weapon that can help you take down enemies without attracting too much attention.",
-      "context": "Kingfisher Compound in Grassrivers",
+      "text": "It contains around $13,000 in cash and illegal products, along with a Leroy Rook collectible card worth another $6,000.",
+      "context": "Tips to Keep Your Money Safe in GTA 6",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
       "language": "en",
       "status": "ungeprüft"
     },
     {
-      "id": "cand-bG9vayBmb3IgYSB3",
-      "text": "Look for a weapon crate sitting on a desk.",
-      "context": "Kingfisher Compound in Grassrivers",
+      "id": "cand-ZGVwb3NpdCB5b3Vy",
+      "text": "Deposit your earnings at an ATM or store them in your house safe to keep them secure.",
+      "context": "Tips to Keep Your Money Safe in GTA 6",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
       "language": "en",
