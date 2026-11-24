@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-23T19:43:28.037Z",
+  "generatedAt": "2026-11-24T10:58:41.522Z",
   "note": "Automatisch gesammelt. Nichts davon ist im Spiel bestätigt. Quellen sind größtenteils Englisch.",
   "sources": [
     {
@@ -12,7 +12,7 @@
       "name": "Beebom (Geld-Spots)",
       "url": "https://beebom.com/gta-6-best-money-spots/",
       "error": null,
-      "found": 15
+      "found": 12
     }
   ],
   "candidates": [
@@ -119,33 +119,6 @@
       "id": "cand-dGhpcyBsb2NhdGlv",
       "text": "This location can provide around $13,000 in cash and illegal products, with the collectible card adding another $6,000 in potential value.",
       "context": "Warehouse in South Vice-Dale County",
-      "source": "Beebom (Geld-Spots)",
-      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
-      "language": "en",
-      "status": "ungeprüft"
-    },
-    {
-      "id": "cand-Y2hlY2sgeW91ciB2",
-      "text": "Check your vehicle trunk : Your duffel bag can return to your personal vehicle’s trunk after certain encounters.",
-      "context": "Tips to Keep Your Money Safe in GTA 6",
-      "source": "Beebom (Geld-Spots)",
-      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
-      "language": "en",
-      "status": "ungeprüft"
-    },
-    {
-      "id": "cand-aXQgY29udGFpbnMg",
-      "text": "It contains around $13,000 in cash and illegal products, along with a Leroy Rook collectible card worth another $6,000.",
-      "context": "Tips to Keep Your Money Safe in GTA 6",
-      "source": "Beebom (Geld-Spots)",
-      "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
-      "language": "en",
-      "status": "ungeprüft"
-    },
-    {
-      "id": "cand-ZGVwb3NpdCB5b3Vy",
-      "text": "Deposit your earnings at an ATM or store them in your house safe to keep them secure.",
-      "context": "Tips to Keep Your Money Safe in GTA 6",
       "source": "Beebom (Geld-Spots)",
       "sourceUrl": "https://beebom.com/gta-6-best-money-spots/",
       "language": "en",
