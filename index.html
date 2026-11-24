@@ -2022,6 +2022,13 @@
         if (!res.ok) throw new Error("HTTP " + res.status);
         const data = await res.json();
         const cands = Array.isArray(data.candidates) ? data.candidates : [];
+        // Deutsche Übersetzungen (data/translations.json), Schlüssel = Kandidaten-ID.
+        let tr = {};
+        try {
+          const trRes = await fetch("data/translations.json?t=" + Date.now(), { cache: "no-store" });
+          if (trRes.ok) tr = (await trRes.json()).translations || {};
+        } catch { tr = {}; }
+        const textOf = c => (typeof tr[c.id] === "string" && tr[c.id].trim()) ? tr[c.id] : c.text;
         const fresh = cands.filter(c => c && typeof c.id === "string" && typeof c.text === "string" && !state.seenUpdates[c.id]);
         const when = data.generatedAt ? new Date(data.generatedAt).toLocaleString("de-DE") : "noch nie";
         meta.textContent = `Letzte Suche: ${when} · ${fresh.length} neu zu prüfen · ${cands.length} gesamt`;
@@ -2031,8 +2038,8 @@
         }
         list.innerHTML = fresh.map(c => `
           <div class="note-item" style="flex-direction:column;">
-            <span style="white-space:pre-wrap;word-break:break-word;">${escapeHtml(c.text)}</span>
-            <span class="muted-small">Quelle: ${escapeHtml(String(c.source || "?"))} · ${escapeHtml(String(c.status || "ungeprüft"))}</span>
+            <span style="white-space:pre-wrap;word-break:break-word;">${escapeHtml(textOf(c))}</span>
+            <span class="muted-small">Quelle: ${escapeHtml(String(c.source || "?"))} · ${escapeHtml(String(c.status || "ungeprüft"))}${tr[c.id] ? " · deutsche Übersetzung" : ""}</span>
             <div class="card-actions">
               <button class="btn btn-cyan" data-take="${escapeHtml(c.id)}">📝 Als Notiz übernehmen</button>
               <button class="btn btn-danger" data-skip="${escapeHtml(c.id)}">✖ Verwerfen</button>
@@ -2042,7 +2049,7 @@
         list.querySelectorAll("[data-take]").forEach(b => b.addEventListener("click", () => {
           const c = byId[b.dataset.take];
           if (!c) return;
-          state.notes.unshift(`[Update, ungeprüft – ${c.source}] ${c.text}`);
+          state.notes.unshift(`[Update, ungeprüft – ${c.source}] ${textOf(c)}`);
           state.seenUpdates[c.id] = true;
           saveState(); renderTools(); updateBackupInfo(); checkUpdates();
           showToast("Als Notiz übernommen");

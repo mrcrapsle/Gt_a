@@ -1,6 +1,6 @@
 // Leonida Vault – Service Worker
 // CACHE_VERSION bei jeder Änderung an den App-Dateien erhöhen, damit Nutzer das Update bekommen.
-const CACHE_VERSION = "lv-v8";
+const CACHE_VERSION = "lv-v9";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -48,7 +48,7 @@ self.addEventListener("fetch", event => {
   }
 
   // Update-Datei immer frisch aus dem Netz (Cache nur als Notfall).
-  if (url.pathname.endsWith("/data/updates.json")) {
+  if (url.pathname.includes("/data/")) {
     event.respondWith(fetch(req).catch(() => caches.match(req)));
     return;
   }
