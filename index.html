@@ -925,6 +925,12 @@
         </div>
       </div>
 
+      <div class="card" id="gameTipsCard">
+        <h3 class="card-title">🚗 Spielverbesserung</h3>
+        <p class="muted-small">Vorschläge für besseres Fahren, Sicht und Helligkeit. Die Menünamen im Spiel können abweichen. Bitte prüfen, bevor du dich darauf verlässt.</p>
+        <div id="gameTipsList"></div>
+      </div>
+
       <div class="card">
         <h3 class="card-title">ℹ️ Über die App</h3>
         <p class="muted-small">Leonida Vault · Version <span id="appVersion">lv-v11</span></p>
@@ -1215,7 +1221,7 @@
       glitchDone: {},
       lastBackupAt: null,
       seenUpdates: {},
-      settings: { fontScale: 100, platformModel: "ps5" }
+      settings: { fontScale: 100, platformModel: "ps5", tipsDone: {} }
     };
     const PLATFORM_MODELS = {
       ps5: { label: "PlayStation 5", family: "ps5" },
@@ -1281,7 +1287,8 @@
         lastBackupAt: typeof parsed.lastBackupAt === "string" && !isNaN(Date.parse(parsed.lastBackupAt)) ? parsed.lastBackupAt : null,
         settings: {
           fontScale: isPlainObject(parsed.settings) && FONT_SCALES.includes(parsed.settings.fontScale) ? parsed.settings.fontScale : 100,
-          platformModel: isPlainObject(parsed.settings) && PLATFORM_MODELS[parsed.settings.platformModel] ? parsed.settings.platformModel : "ps5"
+          platformModel: isPlainObject(parsed.settings) && PLATFORM_MODELS[parsed.settings.platformModel] ? parsed.settings.platformModel : "ps5",
+          tipsDone: isPlainObject(parsed.settings) ? boolMap(parsed.settings.tipsDone) : {}
         }
       };
     }
@@ -2138,6 +2145,34 @@
     }
     document.getElementById("checkUpdatesBtn").addEventListener("click", checkUpdates);
 
+    // SPIELVERBESSERUNG (Quellen stehen bei jedem Tipp; Menünamen im Spiel prüfen)
+    const GAME_TIPS = [
+      { id: "helligkeit", text: "Helligkeit kalibrieren: Pausieren, Einstellungen, Reiter Anzeige. Zuerst das Kalibrierungsbild anpassen, dann eine echte Spielszene prüfen.", source: "theclick.gg" },
+      { id: "hdr", text: "HDR prüfen: Dein Fernseher oder Monitor muss HDR unterstützen, die Konsole muss ein HDR-Signal senden, und das Spiel muss es erkennen. HDR hat eine eigene Kalibrierung im Anzeige-Reiter.", source: "keengamer.com, beatcopgame.com" },
+      { id: "bewegungsunschaerfe", text: "Bewegungsunschärfe auf 0 stellen. Sie verschmiert das Bild bei schnellen Kameradrehungen und beim Fahren.", source: "games.gg, keengamer.com, mein-mmo.de" },
+      { id: "kamerawackeln", text: "Kamerawackeln ausschalten, damit das Bild bei Verfolgungsjagden ruhig bleibt.", source: "stealthygaming.com" },
+      { id: "sicherer-bereich", text: "Sicheren Bereich (Safe Zone) anpassen, wenn Minikarte oder Geldanzeige am Fernsehrand abgeschnitten werden. Das betrifft nur die Bildaufteilung, nicht die Helligkeit.", source: "games.gg, stealthygaming.com" },
+      { id: "minikarte", text: "Minikarte auf Klassisch stellen, solange du die Karte lernst. Den Kompass kannst du später nehmen.", source: "skycoach.gg" },
+      { id: "gps-sprache", text: "GPS-Sprachausgabe einschalten, wenn du beim Fahren oft Abbiegungen verpasst. Sie ist standardmäßig aus.", source: "metaforge.app" },
+      { id: "metrisch", text: "Maßeinheiten auf metrisch umstellen.", source: "giga.de" },
+      { id: "zielhilfe", text: "Zielhilfe zunächst ausgeschaltet lassen und nur bei Bedarf einschalten.", source: "giga.de" },
+      { id: "wurfbahn", text: "Wurfbahn auf „Immer an“ stellen, dann siehst du die Flugbahn von Granaten.", source: "giga.de" },
+      { id: "30fps", text: "Hinweis: Das Spiel läuft mit 30 Bildern pro Sekunde. Eine 60-FPS-Option ist nicht angekündigt.", source: "stealthygaming.com" }
+    ];
+    function renderGameTips() {
+      const list = document.getElementById("gameTipsList");
+      list.innerHTML = GAME_TIPS.map(t => `
+        <label class="checklist-item ${state.settings.tipsDone[t.id] ? "done" : ""}" style="margin-top:8px;">
+          <input type="checkbox" data-tip="${t.id}" ${state.settings.tipsDone[t.id] ? "checked" : ""} />
+          <span>${escapeHtml(t.text)}<br><span class="muted-small">Quelle: ${escapeHtml(t.source)} · ungeprüft</span></span>
+        </label>`).join("");
+      list.querySelectorAll("[data-tip]").forEach(cb => cb.addEventListener("change", () => {
+        if (cb.checked) state.settings.tipsDone[cb.dataset.tip] = true; else delete state.settings.tipsDone[cb.dataset.tip];
+        saveState();
+        renderGameTips();
+      }));
+    }
+
     // OPTIONEN
     function applySettings() {
       const sc = state.settings.fontScale;
@@ -2168,6 +2203,7 @@
 
     // INIT
     applySettings();
+    renderGameTips();
     bindCopyButtons(document);
     renderAll();
   </script>
