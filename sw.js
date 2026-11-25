@@ -1,6 +1,6 @@
 // Leonida Vault – Service Worker
 // CACHE_VERSION bei jeder Änderung an den App-Dateien erhöhen, damit Nutzer das Update bekommen.
-const CACHE_VERSION = "lv-v9";
+const CACHE_VERSION = "lv-v10";
 const APP_SHELL = [
   "./",
   "./index.html",

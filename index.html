@@ -1669,7 +1669,7 @@
       } else {
         nList.innerHTML = state.notes.map((n, idx) => `
           <div class="note-item">
-            <span style="white-space:pre-wrap;word-break:break-word;">${escapeHtml(n)}</span>
+            <span style="white-space:pre-wrap;word-break:break-word;">${escapeHtml(n).replace(/(https?:\/\/[^\s<]+)/g, '<a href="$1" target="_blank" rel="noopener">🔗 Quelle öffnen</a>')}</span>
             <button class="c-btn" style="width:28px;height:28px;font-size:13px;" data-del-note="${idx}" aria-label="Löschen">🗑️</button>
           </div>
         `).join("");
@@ -2024,11 +2024,17 @@
         const cands = Array.isArray(data.candidates) ? data.candidates : [];
         // Deutsche Übersetzungen (data/translations.json), Schlüssel = Kandidaten-ID.
         let tr = {};
+        let trCtx = {};
         try {
           const trRes = await fetch("data/translations.json?t=" + Date.now(), { cache: "no-store" });
-          if (trRes.ok) tr = (await trRes.json()).translations || {};
-        } catch { tr = {}; }
+          if (trRes.ok) {
+            const j = await trRes.json();
+            tr = j.translations || {};
+            trCtx = j.contexts || {};
+          }
+        } catch { tr = {}; trCtx = {}; }
         const textOf = c => (typeof tr[c.id] === "string" && tr[c.id].trim()) ? tr[c.id] : c.text;
+        const ctxOf = c => (typeof trCtx[c.context] === "string" && trCtx[c.context].trim()) ? trCtx[c.context] : (c.context || "");
         const fresh = cands.filter(c => c && typeof c.id === "string" && typeof c.text === "string" && !state.seenUpdates[c.id]);
         const when = data.generatedAt ? new Date(data.generatedAt).toLocaleString("de-DE") : "noch nie";
         meta.textContent = `Letzte Suche: ${when} · ${fresh.length} neu zu prüfen · ${cands.length} gesamt`;
@@ -2040,6 +2046,8 @@
           <div class="note-item" style="flex-direction:column;">
             <span style="white-space:pre-wrap;word-break:break-word;">${escapeHtml(textOf(c))}</span>
             <span class="muted-small">Quelle: ${escapeHtml(String(c.source || "?"))} · ${escapeHtml(String(c.status || "ungeprüft"))}${tr[c.id] ? " · deutsche Übersetzung" : ""}</span>
+            ${ctxOf(c) ? `<span class="muted-small">📍 Ort: ${escapeHtml(ctxOf(c))}</span>` : ""}
+            ${c.sourceUrl ? `<a class="btn btn-cyan" target="_blank" rel="noopener" href="${escapeHtml(c.sourceUrl)}">🔗 Quelle mit Ortsangabe öffnen</a>` : ""}
             <div class="card-actions">
               <button class="btn btn-cyan" data-take="${escapeHtml(c.id)}">📝 Als Notiz übernehmen</button>
               <button class="btn btn-danger" data-skip="${escapeHtml(c.id)}">✖ Verwerfen</button>
@@ -2049,10 +2057,14 @@
         list.querySelectorAll("[data-take]").forEach(b => b.addEventListener("click", () => {
           const c = byId[b.dataset.take];
           if (!c) return;
-          state.notes.unshift(`[Update, ungeprüft – ${c.source}] ${textOf(c)}`);
+          const lines = [`[Update, ungeprüft – ${c.source}] ${textOf(c)}`];
+          if (ctxOf(c)) lines.push(`Ort: ${ctxOf(c)}`);
+          if (c.sourceUrl) lines.push(`Quelle: ${c.sourceUrl}`);
+          state.notes.unshift(lines.join("\n"));
           state.seenUpdates[c.id] = true;
           saveState(); renderTools(); updateBackupInfo(); checkUpdates();
-          showToast("Als Notiz übernommen");
+          showToast("Als Notiz im Notizbuch unten übernommen");
+          document.getElementById("notesList").scrollIntoView({ behavior: "smooth", block: "center" });
         }));
         list.querySelectorAll("[data-skip]").forEach(b => b.addEventListener("click", () => {
           state.seenUpdates[b.dataset.skip] = true;
