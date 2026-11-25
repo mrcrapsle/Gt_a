@@ -533,7 +533,7 @@
       backdrop-filter: blur(12px);
       border-top: 1px solid var(--border);
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
+      grid-template-columns: repeat(6, 1fr);
       padding: 6px 4px calc(8px + env(safe-area-inset-bottom));
     }
 
@@ -679,6 +679,17 @@
     .btn-danger { background: rgba(255, 60, 60, 0.14); color: #ff8080; border: 1px solid rgba(255, 60, 60, 0.35); }
     .card.tried { border-color: rgba(0, 230, 118, 0.35); }
     .muted-small { font-size: 12px; color: var(--muted); margin: 6px 0 0; }
+    .setting-select {
+      width: 100%;
+      background: var(--bg-card-2);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 10px;
+      color: var(--text);
+      padding: 10px;
+      font-size: 16px;
+      font-family: inherit;
+    }
+    #fontScaleBtns .chip.active { background: linear-gradient(135deg, var(--pink), #b81dff); color: #fff; border-color: transparent; }
     .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
   </style>
 </head>
@@ -887,6 +898,39 @@
         <div id="notesList"></div>
       </div>
     </section>
+
+    <!-- TAB 6: OPTIONEN -->
+    <section id="tab-settings" class="tab-section">
+      <div class="card">
+        <h3 class="card-title">🎮 Konsole &amp; Eingabe</h3>
+        <p>Wähle deine Konsole. Die Eingabe-Hinweise bei den Schummelcodes passen sich dann an.</p>
+        <label class="sr-only" for="setPlatform">Konsole</label>
+        <select id="setPlatform" class="setting-select">
+          <option value="ps5">PlayStation 5</option>
+          <option value="ps4">PlayStation 4</option>
+          <option value="xboxseries">Xbox Series X|S</option>
+          <option value="xboxone">Xbox One</option>
+          <option value="pc">PC</option>
+        </select>
+        <p id="platformHint" class="muted-small"></p>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">🖥️ Anzeige</h3>
+        <p>Schriftgröße für die ganze App:</p>
+        <div class="card-actions" id="fontScaleBtns">
+          <button class="chip" data-scale="100" type="button">Normal</button>
+          <button class="chip" data-scale="115" type="button">Groß</button>
+          <button class="chip" data-scale="130" type="button">Sehr groß</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3 class="card-title">ℹ️ Über die App</h3>
+        <p class="muted-small">Leonida Vault · Version <span id="appVersion">lv-v11</span></p>
+        <p class="muted-small">Fortschritt sichern und zurücksetzen findest du im Helfer-Tab.</p>
+      </div>
+    </section>
   </main>
 
   <nav class="bottom-nav">
@@ -895,6 +939,7 @@
     <button class="nav-btn" data-tab="cheats"><span class="ico">🎮</span>Codes<span class="nav-count" data-count="cheats"></span></button>
     <button class="nav-btn" data-tab="media"><span class="ico">🎬</span>Anleitungen</button>
     <button class="nav-btn" data-tab="tools"><span class="ico">🧰</span>Helfer</button>
+    <button class="nav-btn" data-tab="settings"><span class="ico">⚙️</span>Optionen</button>
   </nav>
 
   <div id="toast" class="toast"></div>
@@ -1169,8 +1214,17 @@
       customItems: [],
       glitchDone: {},
       lastBackupAt: null,
-      seenUpdates: {}
+      seenUpdates: {},
+      settings: { fontScale: 100, platformModel: "ps5" }
     };
+    const PLATFORM_MODELS = {
+      ps5: { label: "PlayStation 5", family: "ps5" },
+      ps4: { label: "PlayStation 4", family: "ps5" },
+      xboxseries: { label: "Xbox Series X|S", family: "xbox" },
+      xboxone: { label: "Xbox One", family: "xbox" },
+      pc: { label: "PC", family: null }
+    };
+    const FONT_SCALES = [100, 115, 130];
     const BACKUP_APP_ID = "leonida-vault";
 
     let state = loadState();
@@ -1224,7 +1278,11 @@
         glitchDone: boolMap(parsed.glitchDone),
         seenUpdates: boolMap(parsed.seenUpdates),
         customItems,
-        lastBackupAt: typeof parsed.lastBackupAt === "string" && !isNaN(Date.parse(parsed.lastBackupAt)) ? parsed.lastBackupAt : null
+        lastBackupAt: typeof parsed.lastBackupAt === "string" && !isNaN(Date.parse(parsed.lastBackupAt)) ? parsed.lastBackupAt : null,
+        settings: {
+          fontScale: isPlainObject(parsed.settings) && FONT_SCALES.includes(parsed.settings.fontScale) ? parsed.settings.fontScale : 100,
+          platformModel: isPlainObject(parsed.settings) && PLATFORM_MODELS[parsed.settings.platformModel] ? parsed.settings.platformModel : "ps5"
+        }
       };
     }
 
@@ -2080,7 +2138,36 @@
     }
     document.getElementById("checkUpdatesBtn").addEventListener("click", checkUpdates);
 
+    // OPTIONEN
+    function applySettings() {
+      const sc = state.settings.fontScale;
+      document.body.style.zoom = sc === 100 ? "" : String(sc / 100);
+      const m = PLATFORM_MODELS[state.settings.platformModel];
+      if (m.family) state.platform = m.family;
+      document.getElementById("setPlatform").value = state.settings.platformModel;
+      document.getElementById("platformHint").textContent = m.family
+        ? "Schummelcodes: " + (m.family === "ps5" ? "L1 + R1 halten, dann drücken." : "LB + RB halten, dann drücken.")
+        : "Für den PC gibt es hier noch keine Eingabe-Hinweise. Die Codes gelten für PlayStation und Xbox.";
+      document.querySelectorAll("#fontScaleBtns [data-scale]").forEach(b =>
+        b.classList.toggle("active", Number(b.dataset.scale) === sc));
+      document.getElementById("appVersion").textContent = "lv-v11";
+    }
+    document.getElementById("setPlatform").addEventListener("change", e => {
+      state.settings.platformModel = e.target.value;
+      if (PLATFORM_MODELS[e.target.value].family) state.platform = PLATFORM_MODELS[e.target.value].family;
+      saveState();
+      applySettings();
+      renderCheats();
+    });
+    document.querySelectorAll("#fontScaleBtns [data-scale]").forEach(b =>
+      b.addEventListener("click", () => {
+        state.settings.fontScale = Number(b.dataset.scale);
+        saveState();
+        applySettings();
+      }));
+
     // INIT
+    applySettings();
     bindCopyButtons(document);
     renderAll();
   </script>
